@@ -30,7 +30,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        socketThread.setCommand(5)
         val layout = inflater.inflate(R.layout.main_fragment, container, false)
         val companions = layout.findViewById<RecyclerView>(R.id.my_recycler_view)
         companions.layoutManager = LinearLayoutManager(requireContext())

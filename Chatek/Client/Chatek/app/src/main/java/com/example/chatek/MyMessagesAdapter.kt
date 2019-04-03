@@ -8,12 +8,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import android.view.animation.AlphaAnimation
+
+
 
 class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
 
     var listt = ArrayList<Message>()
     lateinit var req_activity: FragmentActivity
     private lateinit var router: Router
+
+    fun listt_clear(){
+        listt.clear()
+    }
 
     fun listt_define(list: ArrayList<Message>){
         listt = list
@@ -38,6 +45,7 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
 
     override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
         holder.setText((listt[position]).message)
+        setFadeAnimation(holder.itemView)
     }
 
     fun onItemClick(view: View, position: Int) {
@@ -45,6 +53,12 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
         //router = Router(req_activity, R.id.fragment_container)
         //val dialogfragment : DialogFragment = DialogFragment()
         //router.navigateTo(true, dialogfragment)
+    }
+
+    private fun setFadeAnimation(view: View) {
+        val anim = AlphaAnimation(0.0f, 1.0f)
+        anim.duration = 400
+        view.startAnimation(anim)
     }
 
 

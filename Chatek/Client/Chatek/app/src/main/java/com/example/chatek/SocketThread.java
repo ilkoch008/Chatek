@@ -1,5 +1,6 @@
 package com.example.chatek;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,6 +9,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
 
 public class SocketThread extends Thread {
 
@@ -22,6 +31,9 @@ public class SocketThread extends Thread {
     private String incoming = " ";
     private int command;
     private int id;
+    ArrayList<Message> messages = new ArrayList<>();
+    View dialogView = null;
+    View mainView = null;
     /*
     1 - connect to server
     2 - get list of available companions
@@ -41,6 +53,8 @@ public class SocketThread extends Thread {
     synchronized public void setNickName(String nickName){this.nickName = nickName;}
     synchronized public void setmAdapter(MyAdapter mAdapter){this.mAdapter = mAdapter;}
     synchronized public void setMmAdapter(MyMessagesAdapterAdapter mmAdapter){this.mmAdapter = mmAdapter;}
+    synchronized public void setDialogView(View dialogView){this.dialogView = dialogView;}
+    synchronized public void setMainView(View mainView){this.mainView = mainView;}
 
     @Override
     public void run() {
@@ -50,6 +64,7 @@ public class SocketThread extends Thread {
             }
             JSONObject away = new JSONObject();
             JSONObject jIncoming = null;
+            JSONArray jIncomingMessages = null;
             switch (command){
                 case 1:
                     try{
@@ -80,8 +95,25 @@ public class SocketThread extends Thread {
                     }
                     out.println(away.toString());
                     try {
+                        messages.clear();
                         incoming = in.readLine();
-                        jIncoming = new JSONObject(incoming);
+                        jIncomingMessages = new JSONArray(incoming);
+                        for (int i = jIncomingMessages.length()-1; i >= 0; i--){
+                            messages.add(new Message.Builder()
+                            .idIs(jIncomingMessages.getJSONObject(i).getInt("id"))
+                            .messageIs(jIncomingMessages.getJSONObject(i).getString("message"))
+                            .ownerIs(jIncomingMessages.getJSONObject(i).getString("owner"))
+                            .build());
+                        }
+
+
+                        mmAdapter.listt_define(messages);
+                        dialogView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mmAdapter.notifyDataSetChanged();
+                            }
+                        });
                         System.out.println();
                     } catch (IOException e) { e.printStackTrace(); }
                     catch (JSONException e){ e.printStackTrace(); }
@@ -99,15 +131,17 @@ public class SocketThread extends Thread {
                         away.put("data", "renew dialog");
                         out.println(away.toString());
                         incoming = in.readLine();
+                        Thread.sleep(1000);
                         jIncoming = new JSONObject(incoming);
                         System.out.println();
                     }
                         catch (JSONException e) { e.printStackTrace(); }
                         catch (IOException e) { e.printStackTrace(); }
+                        catch (InterruptedException e){e.printStackTrace();}
                     break;
                 case 5:
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

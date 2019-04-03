@@ -66,9 +66,11 @@ public class Client extends Thread {
                         out.println(output);
                         break;
                     case 4:
-
+                        output = gson.toJson(messages);
+                        out.println(output);
                         break;
                     case 5:
+                        out.println();
                         break;
                     case 6:
                         nickName = jInput.get("data").getAsString();

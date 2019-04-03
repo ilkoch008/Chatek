@@ -35,15 +35,13 @@ class DialogFragment  : Fragment() {
 
         val messages = layout.findViewById<RecyclerView>(R.id.messages_recycler_view)
         messages.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, true)
-        val list = ArrayList<String>()
-        list.add("rferrtgrtg\naergewrgtwrgtrgt\nergtwrthrhwrthwrtyh\nwergtwrtyhwr4thwrtyhwrtyhwrthtyhwetyhewq46thw46thw4rthw46rt")
-        for (i in 0..99) {
-            list.add("message №$i")
-        }
+        val list = ArrayList<Message>()
+
         mmadapter.listt_define(list)
         mmadapter.activity_define(requireActivity())
         messages.adapter = mmadapter
         mmadapter.notifyDataSetChanged()
+        socketThread.setDialogView(layout)
         socketThread.setMmAdapter(mmadapter)
 
         var messageEditText : EditText = layout.findViewById(R.id.editText2)
