@@ -36,8 +36,9 @@ class DialogFragment  : Fragment() {
         val messages = layout.findViewById<RecyclerView>(R.id.messages_recycler_view)
         messages.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, true)
         val list = ArrayList<Message>()
-
+        socketThread.setCommand(4)
         mmadapter.listt_define(list)
+        mmadapter.ownner_define(nickName)
         mmadapter.activity_define(requireActivity())
         messages.adapter = mmadapter
         mmadapter.notifyDataSetChanged()

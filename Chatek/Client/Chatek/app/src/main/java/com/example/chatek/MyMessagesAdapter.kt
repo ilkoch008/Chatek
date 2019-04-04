@@ -17,9 +17,14 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
     var listt = ArrayList<Message>()
     lateinit var req_activity: FragmentActivity
     private lateinit var router: Router
+    var owner : String = " "
 
     fun listt_clear(){
         listt.clear()
+    }
+
+    fun ownner_define(owner : String){
+        this.owner = owner
     }
 
     fun listt_define(list: ArrayList<Message>){
@@ -31,11 +36,29 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
     }
 
 
-
+    override fun getItemViewType(position: Int): Int {
+        when(listt[position].owner){
+            "Server" -> return 0
+            owner -> return 1
+            else -> return 2
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchClickableViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        //tableOfItems = def_tableOfItems(tableOfItems)
+        when (viewType){
+            0 ->return SearchClickableViewHolder(
+                    inflater.inflate(R.layout.messages, parent, false),
+                    ::onItemClick)
+            1 ->return SearchClickableViewHolder(
+                    inflater.inflate(R.layout.my_message, parent, false),
+                    ::onItemClick)
+            3 ->return SearchClickableViewHolder(
+                    inflater.inflate(R.layout.companions_message, parent, false),
+                    ::onItemClick)
+            else -> System.exit(-1)
+        }
+
         return SearchClickableViewHolder(
                 inflater.inflate(R.layout.messages, parent, false),
                 ::onItemClick)
@@ -64,8 +87,8 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
 
 }
 
-class MessagesClickableViewHolder(view : View,
-                                private val clickListener : (View, Int) -> Unit ) : RecyclerView.ViewHolder(view) {
+class MessagesClickableViewHolder(view : View, private val clickListener
+                                        : (View, Int) -> Unit ) : RecyclerView.ViewHolder(view) {
     //private val title: ImageView = view.findViewById(R.id.title)
     private val text: TextView = view.findViewById(R.id.searching_text)
 

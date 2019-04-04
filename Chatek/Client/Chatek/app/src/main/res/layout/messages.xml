@@ -2,8 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
+    android:layout_marginStart="30dp"
+    android:layout_marginEnd="30dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <!--xmlns:app="http://schemas.android.com/tools">-->
@@ -13,7 +13,7 @@
         android:layout_margin="4dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        card_view:cardBackgroundColor="@color/colorMessageBackground"
+        card_view:cardBackgroundColor="@color/colorServerMessageBackground"
         card_view:cardCornerRadius="15dp">
 
         <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/colorMessageBackground"
+            android:background="@color/colorServerMessageBackground"
             android:orientation="horizontal">
 
             <TextView

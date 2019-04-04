@@ -5,5 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorMessageBackground">#95CCD5</color>
+    <color name="colorServerMessageBackground">#C495D5</color>
+
     <color name="colorCompanionsMessageBackground">#B3CCCF</color>
 </resources>
