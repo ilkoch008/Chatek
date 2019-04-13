@@ -1,7 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3cedf0bf-f40e-4ca2-a32b-8602423d996c" name="Default Changelist" comment="" />
+    <list default="true" id="3cedf0bf-f40e-4ca2-a32b-8602423d996c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/proguard-rules.pro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/Companion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/DialogFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/GetPropertiesFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/HelloFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MainActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MainFragment.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyLinearLayoutManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyMessagesAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/Router.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/SocketThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/companion_buttons.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/companions_message.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/content_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/dialog_fragment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/get_ip_nickname.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/hello_layout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/main_fragment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/messages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/my_message.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/recycler_view.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Client/Chatek/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatek.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Companion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Conversation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Conversations.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Message.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,25 +54,37 @@
     <option name="delegatedBuild" value="true" />
     <option name="isMigrated" value="true" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="chatek" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
+            <state relative-caret-position="313">
               <caret line="21" selection-start-line="21" selection-end-line="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+            <state relative-caret-position="204">
+              <caret line="15" column="3" lean-forward="true" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Companion.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -46,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="52" selection-start-line="52" selection-end-line="52" />
+            <state relative-caret-position="864">
+              <caret line="107" column="17" lean-forward="true" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -96,6 +148,7 @@
         <option value="$PROJECT_DIR$/src/main/java/chatek/server/Message.java" />
         <option value="$PROJECT_DIR$/src/main/java/chatek/server/Conversation.java" />
         <option value="$PROJECT_DIR$/src/main/java/chatek/server/Conversations.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chatek/server/Companion.java" />
         <option value="$PROJECT_DIR$/src/main/java/chatek/server/App.java" />
         <option value="$PROJECT_DIR$/src/main/java/chatek/server/Client.java" />
       </list>
@@ -108,17 +161,11 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="683" />
-    <option name="width" value="683" />
-    <option name="height" value="728" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1386" />
+    <option name="height" value="788" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -126,13 +173,51 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Course" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="chatek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatek" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chatek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatek" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chatek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatek" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chatek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatek" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chatek" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatek" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="android.sdk.path" value="C:/a_SDK" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -142,7 +227,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="power.mode.ii" />
+    <property name="settings.editor.selected.configurable" value="com.intellij.jarRepository.settings.RemoteRepositoriesConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -194,23 +279,26 @@
       <workItem from="1554026555584" duration="5469000" />
       <workItem from="1554232738704" duration="5065000" />
       <workItem from="1554295091674" duration="9883000" />
-      <workItem from="1554392258019" duration="1353000" />
+      <workItem from="1554392258019" duration="2688000" />
+      <workItem from="1554400299707" duration="4809000" />
+      <workItem from="1555046218246" duration="15824000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21770000" />
+    <option name="totallyTimeSpent" value="43738000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21406959" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4991511" visible="true" weight="0.22012103" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="UI Designer" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Favorites" order="6" sideWeight="0.5008489" side_tool="true" weight="0.22012103" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3293718" />
@@ -245,7 +333,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/chatek/server/Client.java</url>
-          <line>52</line>
+          <line>73</line>
           <properties />
           <option name="timeStamp" value="9" />
         </line-breakpoint>
@@ -267,9 +355,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Conversation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="56" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
+        <state relative-caret-position="313">
           <caret line="21" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
@@ -288,27 +383,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Conversation.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Companion.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="56" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+        <state relative-caret-position="68">
+          <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Client.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="204">
+          <caret line="15" column="3" lean-forward="true" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/App.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="34" column="45" selection-start-line="34" selection-start-column="45" selection-end-line="34" selection-end-column="45" />
+        <state relative-caret-position="864">
+          <caret line="107" column="17" lean-forward="true" selection-start-line="107" selection-start-column="17" selection-end-line="107" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -35,6 +35,10 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
         req_activity = activity
     }
 
+    fun get_listt_size() : Int {
+        return listt.size
+    }
+
 
     override fun getItemViewType(position: Int): Int {
         when(listt[position].owner){
@@ -53,22 +57,22 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
             1 ->return SearchClickableViewHolder(
                     inflater.inflate(R.layout.my_message, parent, false),
                     ::onItemClick)
-            3 ->return SearchClickableViewHolder(
+            else -> return SearchClickableViewHolder(
                     inflater.inflate(R.layout.companions_message, parent, false),
                     ::onItemClick)
-            else -> System.exit(-1)
         }
-
-        return SearchClickableViewHolder(
-                inflater.inflate(R.layout.messages, parent, false),
-                ::onItemClick)
     }
 
     override fun getItemCount(): Int = listt.size
 
     override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
-        holder.setText((listt[position]).message)
-        setFadeAnimation(holder.itemView)
+        if (position < listt.size) {
+            holder.setText((listt[position]).message)
+            setFadeAnimation(holder.itemView)
+        } else {
+            holder.setText(listt[listt.size-2].message)
+            setFadeAnimation(holder.itemView)
+        }
     }
 
     fun onItemClick(view: View, position: Int) {

@@ -33,16 +33,21 @@ class MainFragment : Fragment() {
         socketThread.setCommand(5)
         val layout = inflater.inflate(R.layout.main_fragment, container, false)
         val companions = layout.findViewById<RecyclerView>(R.id.my_recycler_view)
-        companions.layoutManager = LinearLayoutManager(requireContext())
-        val list = ArrayList<String>()
-        for (i in 0..99) {
-            list.add("companion №$i")
+        companions.layoutManager = MyLinearLayoutManager(requireContext())
+        socketThread.setMainView(layout)
+        socketThread.setMainRecView(companions)
+        val list = ArrayList<Companion>()
+        for (i in 1..9) {
+            list.add(Companion("companion №$i", i))
         }
         mAdapter.set_SocketThread(socketThread)
         mAdapter.listt_define(list)
         mAdapter.activity_define(requireActivity())
         companions.adapter = mAdapter
+        companions.recycledViewPool.clear()
+        socketThread.setmAdapter(mAdapter)
         mAdapter.notifyDataSetChanged()
+        //socketThread.setCommand(2)
 
         return layout
     }

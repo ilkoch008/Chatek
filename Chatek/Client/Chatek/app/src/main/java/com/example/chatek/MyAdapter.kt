@@ -17,11 +17,11 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
         this.socketThread = socketThread
     }
 
-    var listt = ArrayList<String>()
+    var listt = ArrayList<Companion>()
     lateinit var req_activity: FragmentActivity
     private lateinit var router: Router
 
-    fun listt_define(list: ArrayList<String>){
+    fun listt_define(list: ArrayList<Companion>){
         listt = list
     }
 
@@ -43,13 +43,14 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
     override fun getItemCount(): Int = listt.size
 
     override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
-        holder.setText(listt[position])
+        holder.setText(listt[position].name)
     }
 
     fun onItemClick(view: View, position: Int) {
-        Toast.makeText(view.context, listt[position], Toast.LENGTH_SHORT).show()
+        Toast.makeText(view.context, listt[position].name, Toast.LENGTH_SHORT).show()
         router = Router(req_activity, R.id.fragment_container)
         val dialogfragment : DialogFragment = DialogFragment()
+        dialogfragment.set_CompanionId(listt[position].id)
         dialogfragment.set_SocketThread(socketThread)
         router.navigateTo(true, dialogfragment)
     }

@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -13,11 +16,23 @@ import java.util.HashMap;
  */
 public class App 
 {
-    ArrayList<Client> clients = new ArrayList<>();
+    public static CopyOnWriteArrayList<Companion> companions = new CopyOnWriteArrayList<>();
+    private static ConcurrentHashMap<ArrayList<Integer>, CopyOnWriteArrayList<Message>> conversations = new ConcurrentHashMap<>();
 
-    public static void main( String[] args )
+    public static void main( String[] args ) {
+        companions.add(new Companion("Server", 0));
+        companions.add(new Companion("Server1", 1));
+        for (int i = 0; i < 100; i++){
+            for (int j = i; j < 100; j++) {
+                ArrayList<Integer> key = new ArrayList<>();
+                key.add(i);
+                key.add(j);
+                Collections.sort(key);
+                CopyOnWriteArrayList<Message> conversation = new CopyOnWriteArrayList<>();
+                conversations.put(key, conversation);
+            }
+        }
 
-    {
         ServerSocket server = null;
         try {
             server = new ServerSocket(4444, 1000);
@@ -27,7 +42,7 @@ public class App
         }
 
 
-        for(int i = 0; i < 1000; i++){
+        for(int i = 1; i < 100; i++){
             Client client = new Client();
             Socket fromclient = null;
             try {
@@ -38,7 +53,9 @@ public class App
                 System.out.println("Can't accept");
                 System.exit(-1);
             }
-            client.SetClient(i+1, fromclient);
+            client.SetClient(i, fromclient);
+            client.setCompanions(companions);
+            client.setConversations(conversations);
             client.start();
         }
     }

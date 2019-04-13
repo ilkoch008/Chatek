@@ -2,8 +2,6 @@ package com.example.chatek
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +14,14 @@ import java.util.ArrayList
 class DialogFragment  : Fragment() {
     private lateinit var router : Router
     lateinit var socketThread : SocketThread
+    var companionId : Int = 0
 
     public fun set_SocketThread(socketThread: SocketThread) {
         this.socketThread = socketThread
+    }
+
+    public fun set_CompanionId(companionId : Int){
+        this.companionId = companionId
     }
 
     val mmadapter : MyMessagesAdapterAdapter = MyMessagesAdapterAdapter()
@@ -34,9 +37,12 @@ class DialogFragment  : Fragment() {
         val layout = inflater.inflate(R.layout.dialog_fragment, container, false)
 
         val messages = layout.findViewById<RecyclerView>(R.id.messages_recycler_view)
-        messages.layoutManager = LinearLayoutManager(requireContext(), VERTICAL, true)
+        messages.layoutManager = MyLinearLayoutManager(requireContext(), VERTICAL, true)
         val list = ArrayList<Message>()
-        socketThread.setCommand(4)
+        messages.recycledViewPool
+        socketThread.setDialogRecView(messages)
+        socketThread.setCompaionId(companionId)
+        socketThread.setCommand(9)
         mmadapter.listt_define(list)
         mmadapter.ownner_define(nickName)
         mmadapter.activity_define(requireActivity())
@@ -50,6 +56,7 @@ class DialogFragment  : Fragment() {
         var buttonSend : Button = layout.findViewById(R.id.button2)
 
         buttonSend.setOnClickListener {
+            messageEditText.text.toString()
             socketThread.setMessage(messageEditText.text.toString())
             messageEditText.setText("")
             socketThread.setCommand(3) //send message
