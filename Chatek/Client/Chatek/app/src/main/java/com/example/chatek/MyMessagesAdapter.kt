@@ -68,11 +68,12 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
     override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
         if (position < listt.size) {
             holder.setText((listt[position]).message)
-            setFadeAnimation(holder.itemView)
-        } else {
-            holder.setText(listt[listt.size-2].message)
-            setFadeAnimation(holder.itemView)
+            //setFadeAnimation(holder.itemView)
         }
+//        else {
+//            holder.setText(listt[listt.size-2].message)
+//            //setFadeAnimation(holder.itemView)
+//        }
     }
 
     fun onItemClick(view: View, position: Int) {

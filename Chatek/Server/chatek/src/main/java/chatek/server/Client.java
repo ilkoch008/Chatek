@@ -18,21 +18,21 @@ public class Client extends Thread {
     String nickName = " ";
     Socket fromClient = null;
     //ArrayList<Message> messages = new ArrayList<>();
-    CopyOnWriteArrayList<Companion> companions = null;
-    ConcurrentHashMap<ArrayList<Integer>, CopyOnWriteArrayList<Message>> conversations = null;
-    CopyOnWriteArrayList<Message> conversation = null;
+    Companions companions = null;
+    ConcurrentHashMap<ArrayList<Integer>, Conversation> conversations = null;
+    Conversation conversation = null;
 
     public void SetClient(int clientId, Socket fromClient){
         this.clientId = clientId;
         this.fromClient = fromClient;
     }
 
-    public void setCompanions(CopyOnWriteArrayList<Companion> companions){
+    public void setCompanions(Companions companions){
         this.companions = companions;
 
     }
 
-    public void setConversations(ConcurrentHashMap<ArrayList<Integer>, CopyOnWriteArrayList<Message>> conversations){
+    public void setConversations(ConcurrentHashMap<ArrayList<Integer>, Conversation> conversations){
         this.conversations = conversations;
     }
 
@@ -66,9 +66,13 @@ public class Client extends Thread {
                         System.out.println(nickName);
                         jOutput.addProperty("data", clientId);
                         out.println(jOutput.toString());
-                        companions.add(new Companion(nickName, clientId));
+                        companions.Add(new Companion(nickName, clientId, true));
+                        Thread.yield();
                         break;
                     case 2:
+                        output = gson.toJson(companions);
+                        out.println(output);
+                        Thread.yield();
                         break;
                     case 3:
                         Message message = new Message.Builder()
@@ -76,22 +80,26 @@ public class Client extends Thread {
                                 .idIs(jInput.get("id").getAsInt())
                                 .ownerIs(jInput.get("owner").getAsString())
                                 .build();
-                        conversation.add(message);
-                        Message response = new Message.Builder()
-                                .messageIs("nea))0)0)")
-                                .idIs(0)
-                                .ownerIs("Server")
-                                .build();
-                        conversation.add(response);
-                        output = gson.toJson(conversation);
+                        conversation.Add(message);
+                        //conversation.;
+//                        Message response = new Message.Builder()
+//                                .messageIs("nea))0)0)")
+//                                .idIs(0)
+//                                .ownerIs("Server")
+//                                .build();
+//                        conversation.add(response);
+                        output = gson.toJson(conversation.getConversation());
                         out.println(output);
+                        Thread.yield();
                         break;
                     case 4:
-                        output = gson.toJson(conversation);
+                        output = gson.toJson(conversation.getConversation());
                         out.println(output);
+                        Thread.yield();
                         break;
                     case 5:
                         out.println();
+                        Thread.yield();
                         break;
                     case 6:
 
@@ -104,6 +112,7 @@ public class Client extends Thread {
                         Collections.sort(key);
                         conversation = conversations.get(key);
                         out.println("ok");
+                        Thread.yield();
                         break;
                 }
                 //out.println("S ::: " + input);
@@ -115,6 +124,7 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        companions.companions.get(clientId).isNotAvailable();
         System.out.println("Client disconnected");
 
     }

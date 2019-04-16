@@ -43,7 +43,11 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
     override fun getItemCount(): Int = listt.size
 
     override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
-        holder.setText(listt[position].name)
+        if (listt[position].availability) {
+            holder.setText(listt[position].name + "\n")
+        } else {
+            holder.setText(listt[position].name + "\n(Недоступен)")
+        }
     }
 
     fun onItemClick(view: View, position: Int) {

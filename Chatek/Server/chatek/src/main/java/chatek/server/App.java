@@ -16,19 +16,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class App 
 {
-    public static CopyOnWriteArrayList<Companion> companions = new CopyOnWriteArrayList<>();
-    private static ConcurrentHashMap<ArrayList<Integer>, CopyOnWriteArrayList<Message>> conversations = new ConcurrentHashMap<>();
+    public static Companions companions = new Companions();
+    private static ConcurrentHashMap<ArrayList<Integer>, Conversation> conversations = new ConcurrentHashMap<>();
 
     public static void main( String[] args ) {
-        companions.add(new Companion("Server", 0));
-        companions.add(new Companion("Server1", 1));
+        companions.Add(new Companion("Server", 0, true));
+        //companions.add(new Companion("Server1", 1));
         for (int i = 0; i < 100; i++){
             for (int j = i; j < 100; j++) {
                 ArrayList<Integer> key = new ArrayList<>();
                 key.add(i);
                 key.add(j);
                 Collections.sort(key);
-                CopyOnWriteArrayList<Message> conversation = new CopyOnWriteArrayList<>();
+                Conversation conversation = new Conversation();
                 conversations.put(key, conversation);
             }
         }

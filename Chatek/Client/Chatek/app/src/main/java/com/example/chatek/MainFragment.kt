@@ -30,16 +30,15 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        socketThread.setCommand(5)
+        socketThread.setCommand(2)
         val layout = inflater.inflate(R.layout.main_fragment, container, false)
         val companions = layout.findViewById<RecyclerView>(R.id.my_recycler_view)
         companions.layoutManager = MyLinearLayoutManager(requireContext())
         socketThread.setMainView(layout)
         socketThread.setMainRecView(companions)
         val list = ArrayList<Companion>()
-        for (i in 1..9) {
-            list.add(Companion("companion №$i", i))
-        }
+        list.add(Companion("Server", 0, true))
+        socketThread.setCommand(2)
         mAdapter.set_SocketThread(socketThread)
         mAdapter.listt_define(list)
         mAdapter.activity_define(requireActivity())
@@ -48,7 +47,11 @@ class MainFragment : Fragment() {
         socketThread.setmAdapter(mAdapter)
         mAdapter.notifyDataSetChanged()
         //socketThread.setCommand(2)
-
         return layout
+    }
+
+    override fun onResume() {
+        super.onResume()
+        socketThread.setCommand(2)
     }
 }

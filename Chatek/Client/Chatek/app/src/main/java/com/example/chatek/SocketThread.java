@@ -96,12 +96,15 @@ public class SocketThread extends Thread {
                         away.put("data", "get companions");
                         out.println(away.toString());
                         incoming = in.readLine();
-                        jIncomingMessages = new JSONArray(incoming);
+                        jIncoming = new JSONObject(incoming);
+                        jIncomingMessages = jIncoming.getJSONArray("companions");
                         int mmm = jIncomingMessages.length();
+                        companions.clear();
                         for (int j = 0; j < mmm; j++) {
                             companions.add(new Companion(
-                                    jIncomingMessages.getJSONObject(i).getString("name"),
-                                    jIncomingMessages.getJSONObject(i).getInt("id")));
+                                    jIncomingMessages.getJSONObject(j).getString("name"),
+                                    jIncomingMessages.getJSONObject(j).getInt("id"),
+                                    jIncomingMessages.getJSONObject(j).getBoolean("availability")));
                         }
                         mAdapter.listt_define(companions);
                         mainView.post(new Runnable() {
@@ -113,6 +116,7 @@ public class SocketThread extends Thread {
                         });
                     } catch (IOException e){e.printStackTrace();}
                     catch (JSONException e){e.printStackTrace();}
+                    command = 5;
                     break;
                 case 3:
                     String ans = " ";
@@ -165,6 +169,7 @@ public class SocketThread extends Thread {
                         incoming = in.readLine();
                         jIncomingMessages = new JSONArray(incoming);
                         newMessages.clear();
+                        messages.clear();
                         for (int i = jIncomingMessages.length()-1; i >= 0; i--){
                             newMessages.add(new Message.Builder()
                                     .idIs(jIncomingMessages.getJSONObject(i).getInt("id"))
@@ -172,7 +177,7 @@ public class SocketThread extends Thread {
                                     .ownerIs(jIncomingMessages.getJSONObject(i).getString("owner"))
                                     .build());
                         }
-                        if (mmAdapter.get_listt_size() != newMessages.size()) {
+                        //if (mmAdapter.get_listt_size() != newMessages.size()) {
                             messages = newMessages;
                             mmAdapter.listt_define(messages);
                             dialogView.post(new Runnable() {
@@ -182,20 +187,26 @@ public class SocketThread extends Thread {
                                     mmAdapter.notifyDataSetChanged();
                                 }
                             });
-                        }
-                        Thread.sleep(25);
+                        //}
+                        //Thread.sleep(25);
                         System.out.println();
                     }
                         catch (JSONException e) { e.printStackTrace(); }
                         catch (IOException e) { e.printStackTrace(); }
-                        catch (InterruptedException e){e.printStackTrace();}
-                        command = 6;
+                        //catch (InterruptedException e){e.printStackTrace();}
+                        command = 9;
                     break;
                 case 5:
-                    try {
-                        Thread.sleep(25);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    i++;
+                    if(i<40) {
+                        try {
+                            Thread.sleep(25);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        i=0;
+                        command = 2;
                     }
                     break;
                 case 6:
@@ -217,7 +228,7 @@ public class SocketThread extends Thread {
                         away.put("companionId", companionId);
                         out.println(away.toString());
                         incoming = in.readLine();
-                        command = 4;
+                        command = 6;
                     } catch (JSONException e) { e.printStackTrace(); }
                     catch (IOException e) { e.printStackTrace(); }
                     break;
