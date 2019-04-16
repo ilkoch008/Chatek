@@ -7,12 +7,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.*;
 
 public class Client extends Thread {
+    ArrayList<Integer> key = new ArrayList<>();
     int clientId;
     int companionId;
     String nickName = " ";
@@ -51,6 +53,7 @@ public class Client extends Thread {
         }
 
         String input, output;
+        output = null;
         JsonParser parser = new JsonParser();
         Gson gson = new Gson();
         System.out.println("Wait for messages");
@@ -81,19 +84,27 @@ public class Client extends Thread {
                                 .ownerIs(jInput.get("owner").getAsString())
                                 .build();
                         conversation.Add(message);
-                        //conversation.;
-//                        Message response = new Message.Builder()
-//                                .messageIs("nea))0)0)")
-//                                .idIs(0)
-//                                .ownerIs("Server")
-//                                .build();
-//                        conversation.add(response);
+                        if(key.contains(0)) {
+                        Message response = new Message.Builder()
+                                .messageIs("Пошёл нахуй, пидрила ебаная")
+                                .idIs(0)
+                                .ownerIs("Server")
+                                .build();
+                        conversation.Add(response);
+                        }
                         output = gson.toJson(conversation.getConversation());
                         out.println(output);
                         Thread.yield();
                         break;
                     case 4:
-                        output = gson.toJson(conversation.getConversation());
+                        try {
+                            output = gson.toJson(conversation.getConversation());
+                        } catch (ConcurrentModificationException e){
+                            e.printStackTrace();
+                            companions.companions.get(clientId).isNotAvailable();
+                            Thread.currentThread().interrupt();
+                        }
+
                         out.println(output);
                         Thread.yield();
                         break;
@@ -105,8 +116,8 @@ public class Client extends Thread {
 
                         break;
                     case 9:
+                        key.clear();
                         companionId = jInput.get("companionId").getAsInt();
-                        ArrayList<Integer> key = new ArrayList<>();
                         key.add(companionId);
                         key.add(clientId);
                         Collections.sort(key);
