@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3cedf0bf-f40e-4ca2-a32b-8602423d996c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Companions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/Companion.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/Companion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MainFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MainFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyLinearLayoutManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyLinearLayoutManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyMessagesAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/MyMessagesAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/SocketThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/java/com/example/chatek/SocketThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/companion_buttons.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Client/Chatek/app/src/main/res/layout/companion_buttons.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatek/server/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatek/server/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatek/server/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatek/server/Companion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Companion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatek/server/Conversation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chatek/server/Conversation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chatek/server/Conversations.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/chatek/server/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/chatek/server/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/chatek/server/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/chatek/server/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/chatek/server/Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/chatek/server/Companion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/chatek/server/Conversation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/chatek/server/Conversation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/chatek/server/Conversations.class" beforeDir="false" />
-    </list>
+    <list default="true" id="3cedf0bf-f40e-4ca2-a32b-8602423d996c" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -103,11 +80,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="126" column="61" selection-start-line="126" selection-start-column="61" selection-end-line="126" selection-end-column="61" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -276,12 +250,12 @@
       <workItem from="1554392258019" duration="2688000" />
       <workItem from="1554400299707" duration="4809000" />
       <workItem from="1555046218246" duration="15824000" />
-      <workItem from="1555412827091" duration="17108000" />
+      <workItem from="1555412827091" duration="17386000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60846000" />
+    <option name="totallyTimeSpent" value="61124000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -416,11 +390,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/chatek/server/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="126" column="61" selection-start-line="126" selection-start-column="61" selection-end-line="126" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="119">
+          <caret line="10" column="49" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
         </state>
       </provider>
     </entry>

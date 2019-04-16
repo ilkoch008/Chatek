@@ -49,6 +49,16 @@ public class SocketThread extends Thread {
     9 - choose companion
      */
 
+    final static int CONNECT_TO_SERVER = 1;
+    final static int GET_COMPANIONS = 2;
+    final static int SEND_MESSAGE = 3;
+    final static int RENEW_DIALOG = 4;
+    final static int WAIT = 5;
+    final static int WAIT_RENEW_DIALOG = 6;
+    final static int CHECK_NEW_MESSAGES = 7;
+    final static int CHECK_NEW_COMPANIONS = 8;
+    final static int CHOOSE_COMPANION = 9;
+
     synchronized public void setCommand(int command) {
         this.command = command;
     }
@@ -75,24 +85,24 @@ public class SocketThread extends Thread {
             JSONObject jIncoming = null;
             JSONArray jIncomingMessages = null;
             switch (command){
-                case 1:
+                case CONNECT_TO_SERVER:
                     try{
                         fromserver = new Socket(ip, 4444);
                         in = new BufferedReader(new InputStreamReader(fromserver.getInputStream()));
                         out = new PrintWriter(fromserver.getOutputStream(), true);
-                        away.put("command", 1);
+                        away.put("command", CONNECT_TO_SERVER);
                         away.put("data", nickName);
                         out.println(away.toString());
                         incoming = in.readLine();
                         jIncoming = new JSONObject(incoming);
                         id = jIncoming.getInt("data");
-                        command = 5; }
+                        command = WAIT; }
                         catch (IOException e){e.printStackTrace(); }
                         catch (JSONException e){e.printStackTrace();}
                     break;
-                case 2:
+                case GET_COMPANIONS:
                     try{
-                        away.put("command", 2);
+                        away.put("command", GET_COMPANIONS);
                         away.put("data", "get companions");
                         out.println(away.toString());
                         incoming = in.readLine();
@@ -116,9 +126,9 @@ public class SocketThread extends Thread {
                         });
                     } catch (IOException e){e.printStackTrace();}
                     catch (JSONException e){e.printStackTrace();}
-                    command = 5;
+                    command = WAIT;
                     break;
-                case 3:
+                case SEND_MESSAGE:
                     String ans = " ";
                     try {
                         away.put("command", command);
@@ -158,10 +168,10 @@ public class SocketThread extends Thread {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    command = 4;
+                    command = RENEW_DIALOG;
 
                     break;
-                case 4:
+                case RENEW_DIALOG:
                     try {
                         away.put("command", command);
                         away.put("data", "renew dialog");
@@ -194,9 +204,9 @@ public class SocketThread extends Thread {
                         catch (JSONException e) { e.printStackTrace(); }
                         catch (IOException e) { e.printStackTrace(); }
                         //catch (InterruptedException e){e.printStackTrace();}
-                        command = 9;
+                        command = CHOOSE_COMPANION;
                     break;
-                case 5:
+                case WAIT:
                     i++;
                     if(i<40) {
                         try {
@@ -206,10 +216,10 @@ public class SocketThread extends Thread {
                         }
                     } else {
                         i=0;
-                        command = 2;
+                        command = GET_COMPANIONS;
                     }
                     break;
-                case 6:
+                case WAIT_RENEW_DIALOG:
                     i++;
                     if(i<40) {
                         try {
@@ -219,16 +229,16 @@ public class SocketThread extends Thread {
                         }
                     } else {
                         i=0;
-                        command = 4;
+                        command = RENEW_DIALOG;
                     }
                     break;
-                case 9:
+                case CHOOSE_COMPANION:
                     try {
-                        away.put("command", 9);
+                        away.put("command", CHOOSE_COMPANION);
                         away.put("companionId", companionId);
                         out.println(away.toString());
                         incoming = in.readLine();
-                        command = 6;
+                        command = WAIT_RENEW_DIALOG;
                     } catch (JSONException e) { e.printStackTrace(); }
                     catch (IOException e) { e.printStackTrace(); }
                     break;
