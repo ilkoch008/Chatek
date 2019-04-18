@@ -84,14 +84,14 @@ public class Client extends Thread {
                                 .ownerIs(jInput.get("owner").getAsString())
                                 .build();
                         conversation.Add(message);
-                        if(key.contains(0)) {
-                        Message response = new Message.Builder()
-                                .messageIs("Пошёл нахуй, пидрила ебаная")
-                                .idIs(0)
-                                .ownerIs("Server")
-                                .build();
-                        conversation.Add(response);
-                        }
+//                        if(key.contains(0)) {
+//                        Message response = new Message.Builder()
+//                                .messageIs("Пошёл нахуй, пидрила ебаная")
+//                                .idIs(0)
+//                                .ownerIs("Server")
+//                                .build();
+//                        conversation.Add(response);
+//                        }
                         output = gson.toJson(conversation.getConversation());
                         out.println(output);
                         Thread.yield();
@@ -118,9 +118,14 @@ public class Client extends Thread {
                     case 9:
                         key.clear();
                         companionId = jInput.get("companionId").getAsInt();
-                        key.add(companionId);
-                        key.add(clientId);
-                        Collections.sort(key);
+                        if (companionId == 0) {
+                            key.add(0);
+                            key.add(0);
+                        } else {
+                            key.add(companionId);
+                            key.add(clientId);
+                            Collections.sort(key);
+                        }
                         conversation = conversations.get(key);
                         out.println("ok");
                         Thread.yield();

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout.VERTICAL
+import com.example.chatek.SocketThread.*
 import java.util.ArrayList
 
 class DialogFragment  : Fragment() {
@@ -42,7 +43,7 @@ class DialogFragment  : Fragment() {
         messages.recycledViewPool
         socketThread.setDialogRecView(messages)
         socketThread.setCompaionId(companionId)
-        socketThread.setCommand(9)
+        socketThread.setCommand(CHOOSE_COMPANION)
         mmadapter.listt_define(list)
         mmadapter.ownner_define(nickName)
         mmadapter.activity_define(requireActivity())
@@ -59,7 +60,7 @@ class DialogFragment  : Fragment() {
             messageEditText.text.toString()
             socketThread.setMessage(messageEditText.text.toString())
             messageEditText.setText("")
-            socketThread.setCommand(3) //send message
+            socketThread.setCommand(SEND_MESSAGE) //send message
         }
 
         return layout

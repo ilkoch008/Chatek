@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.chatek.SocketThread.*
 import java.util.ArrayList
 
 var nickName : String = String()
@@ -30,7 +31,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        socketThread.setCommand(2)
+        socketThread.setCommand(GET_COMPANIONS)
         val layout = inflater.inflate(R.layout.main_fragment, container, false)
         val companions = layout.findViewById<RecyclerView>(R.id.my_recycler_view)
         companions.layoutManager = MyLinearLayoutManager(requireContext())
@@ -38,7 +39,7 @@ class MainFragment : Fragment() {
         socketThread.setMainRecView(companions)
         val list = ArrayList<Companion>()
         list.add(Companion("Server", 0, true))
-        socketThread.setCommand(2)
+        socketThread.setCommand(GET_COMPANIONS)
         mAdapter.set_SocketThread(socketThread)
         mAdapter.listt_define(list)
         mAdapter.activity_define(requireActivity())
@@ -52,6 +53,6 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        socketThread.setCommand(2)
+        socketThread.setCommand(GET_COMPANIONS)
     }
 }

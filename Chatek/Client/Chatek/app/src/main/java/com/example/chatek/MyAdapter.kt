@@ -66,6 +66,7 @@ class SearchClickableViewHolder(view : View,
                                 private val clickListener : (View, Int) -> Unit ) : RecyclerView.ViewHolder(view) {
     //private val title: ImageView = view.findViewById(R.id.title)
     private val text: TextView = view.findViewById(R.id.searching_text)
+    public val localView : View = view
 
     init {
         view.setOnClickListener {
@@ -75,5 +76,10 @@ class SearchClickableViewHolder(view : View,
 
     fun setText(text: String) {
         this.text.text = text
+    }
+
+    fun setOwner(owner: String){
+        val thisOwner: TextView = localView.findViewById(R.id.searching_text_name)
+        thisOwner.text = owner
     }
 }
