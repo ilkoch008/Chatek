@@ -65,7 +65,7 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
 class SearchClickableViewHolder(view : View,
                                 private val clickListener : (View, Int) -> Unit ) : RecyclerView.ViewHolder(view) {
     //private val title: ImageView = view.findViewById(R.id.title)
-    private val text: TextView = view.findViewById(R.id.searching_text)
+    private val text: TextView = view.findViewById(R.id.searching_text) as TextView
     public val localView : View = view
 
     init {
@@ -79,7 +79,7 @@ class SearchClickableViewHolder(view : View,
     }
 
     fun setOwner(owner: String){
-        val thisOwner: TextView = localView.findViewById(R.id.searching_text_name)
+        val thisOwner: TextView = localView.findViewById(R.id.searching_text_name) as TextView
         thisOwner.text = owner
     }
 }

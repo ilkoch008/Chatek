@@ -37,7 +37,7 @@ class DialogFragment  : Fragment() {
 
         val layout = inflater.inflate(R.layout.dialog_fragment, container, false)
 
-        val messages = layout.findViewById<RecyclerView>(R.id.messages_recycler_view)
+        val messages : RecyclerView = layout.findViewById(R.id.messages_recycler_view) as RecyclerView
         messages.layoutManager = MyLinearLayoutManager(requireContext(), VERTICAL, true)
         val list = ArrayList<Message>()
         messages.recycledViewPool
@@ -52,9 +52,9 @@ class DialogFragment  : Fragment() {
         socketThread.setDialogView(layout)
         socketThread.setMmAdapter(mmadapter)
 
-        var messageEditText : EditText = layout.findViewById(R.id.editText2)
+        var messageEditText : EditText = layout.findViewById(R.id.editText2) as EditText
 
-        var buttonSend : Button = layout.findViewById(R.id.button2)
+        var buttonSend : Button = layout.findViewById(R.id.button2) as Button
 
         buttonSend.setOnClickListener {
             messageEditText.text.toString()

@@ -96,7 +96,7 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
 class MessagesClickableViewHolder(view : View, private val clickListener
                                         : (View, Int) -> Unit ) : RecyclerView.ViewHolder(view) {
     //private val title: ImageView = view.findViewById(R.id.title)
-    private val text: TextView = view.findViewById(R.id.searching_text)
+    private val text: TextView = view.findViewById(R.id.searching_text) as TextView
 
     init {
         view.setOnClickListener {

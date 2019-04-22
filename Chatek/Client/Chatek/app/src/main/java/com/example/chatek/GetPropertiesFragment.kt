@@ -30,9 +30,9 @@ class GetPropertiesFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val layout = inflater.inflate(R.layout.get_ip_nickname, container, false)
-        var getNick : EditText = layout.findViewById(R.id.editNick)
-        var getIp : EditText = layout.findViewById(R.id.editIp)
-        var button : Button = layout.findViewById(R.id.button_ip)
+        var getNick : EditText = layout.findViewById(R.id.editNick) as EditText
+        var getIp : EditText = layout.findViewById(R.id.editIp) as EditText
+        var button : Button = layout.findViewById(R.id.button_ip) as Button
 
         button.setOnClickListener {
             nickName = getNick.text.toString()

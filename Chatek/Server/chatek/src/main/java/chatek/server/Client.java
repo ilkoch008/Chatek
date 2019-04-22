@@ -86,7 +86,7 @@ public class Client extends Thread {
                         conversation.Add(message);
 //                        if(key.contains(0)) {
 //                        Message response = new Message.Builder()
-//                                .messageIs("Пошёл нахуй, пидрила ебаная")
+//                                .messageIs("etggwrry")
 //                                .idIs(0)
 //                                .ownerIs("Server")
 //                                .build();

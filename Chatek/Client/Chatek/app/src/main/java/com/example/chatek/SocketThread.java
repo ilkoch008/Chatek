@@ -32,9 +32,9 @@ public class SocketThread extends Thread {
     private int companionId;
     private  RecyclerView dialogRecView;
     private  RecyclerView mainRecView;
-    ArrayList<Message> messages = new ArrayList<>();
-    ArrayList<Message> newMessages = new ArrayList<>();
-    ArrayList<Companion> companions = new ArrayList<>();
+    ArrayList<Message> messages = new ArrayList<Message>();
+    ArrayList<Message> newMessages = new ArrayList<Message>();
+    ArrayList<Companion> companions = new ArrayList<Companion>();
     View dialogView = null;
     View mainView = null;
     /*
@@ -42,7 +42,7 @@ public class SocketThread extends Thread {
     2 - get list of available companions
     3 - send message
     4 - renew dialog
-    5 - wait
+    5 - wait and get companions
     6 - wait and renew dialog
     7 - check out new messages
     8 - check out new companions
@@ -53,7 +53,7 @@ public class SocketThread extends Thread {
     final static int GET_COMPANIONS = 2;
     final static int SEND_MESSAGE = 3;
     final static int RENEW_DIALOG = 4;
-    final static int WAIT = 5;
+    final static int WAIT_GET_COMPANIONS = 5;
     final static int WAIT_RENEW_DIALOG = 6;
     final static int CHECK_NEW_MESSAGES = 7;
     final static int CHECK_NEW_COMPANIONS = 8;
@@ -96,7 +96,7 @@ public class SocketThread extends Thread {
                         incoming = in.readLine();
                         jIncoming = new JSONObject(incoming);
                         id = jIncoming.getInt("data");
-                        command = WAIT; }
+                        command = WAIT_GET_COMPANIONS; }
                         catch (IOException e){e.printStackTrace(); }
                         catch (JSONException e){e.printStackTrace();}
                     break;
@@ -126,7 +126,7 @@ public class SocketThread extends Thread {
                         });
                     } catch (IOException e){e.printStackTrace();}
                     catch (JSONException e){e.printStackTrace();}
-                    command = WAIT;
+                    command = WAIT_GET_COMPANIONS;
                     break;
                 case SEND_MESSAGE:
                     String ans = " ";
@@ -164,7 +164,7 @@ public class SocketThread extends Thread {
                     } catch (IOException e) { e.printStackTrace(); }
                     catch (JSONException e){ e.printStackTrace(); }
                     try {
-                        Thread.sleep(25);
+                        Thread.sleep(5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -206,11 +206,11 @@ public class SocketThread extends Thread {
                         //catch (InterruptedException e){e.printStackTrace();}
                         command = CHOOSE_COMPANION;
                     break;
-                case WAIT:
+                case WAIT_GET_COMPANIONS:
                     i++;
-                    if(i<40) {
+                    if(i<200) {
                         try {
-                            Thread.sleep(25);
+                            Thread.sleep(5);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -221,9 +221,9 @@ public class SocketThread extends Thread {
                     break;
                 case WAIT_RENEW_DIALOG:
                     i++;
-                    if(i<40) {
+                    if(i<200) {
                         try {
-                            Thread.sleep(25);
+                            Thread.sleep(5);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
