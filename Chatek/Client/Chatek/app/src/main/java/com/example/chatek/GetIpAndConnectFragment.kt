@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 
-class GetPropertiesFragment : Fragment() {
+class GetIpAndConnectFragment : Fragment() {
     private lateinit var router: Router
 
 
@@ -26,21 +26,20 @@ class GetPropertiesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val layout = inflater.inflate(R.layout.log_in, container, false)
-        var getNick : EditText = layout.findViewById(R.id.editNick) as EditText
+        val layout = inflater.inflate(R.layout.get_ip_and_connect, container, false)
+        socketThread.setMainView(layout)
         var getIp : EditText = layout.findViewById(R.id.editIp) as EditText
         var button : Button = layout.findViewById(R.id.button_ip) as Button
 
         button.setOnClickListener {
-            nickName = getNick.text.toString()
             ipAddress = getIp.text.toString()
-            val mainFragment = MainFragment()
-            mainFragment.set_SocketThread(socketThread)
+            val logInFragment = LogInFragment()
+            logInFragment.set_SocketThread(socketThread)
             socketThread.setCommand(1)
             socketThread.setIp(ipAddress)
-            socketThread.setNickName(nickName)
+            //socketThread.setNickName(nickName)
             socketThread.start()
-            router.navigateTo(false, mainFragment)
+            router.navigateTo(false, logInFragment)
         }
 
         return layout

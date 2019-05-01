@@ -45,7 +45,7 @@ class DialogFragment  : Fragment() {
         socketThread.setCompaionId(companionId)
         socketThread.setCommand(CHOOSE_COMPANION)
         mmadapter.listt_define(list)
-        mmadapter.ownner_define(nickName)
+        mmadapter.ownner_define(socketThread.id)
         mmadapter.activity_define(requireActivity())
         messages.adapter = mmadapter
         mmadapter.notifyDataSetChanged()

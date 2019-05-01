@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 
 public class SocketThread extends Thread {
@@ -27,8 +28,9 @@ public class SocketThread extends Thread {
     private String nickName = " ";
     private String message = " ";
     private String incoming = " ";
+    private String password = " ";
     private int command;
-    private int id;
+    public int id;
     private int companionId;
     private  RecyclerView dialogRecView;
     private  RecyclerView mainRecView;
@@ -37,6 +39,7 @@ public class SocketThread extends Thread {
     ArrayList<Companion> companions = new ArrayList<Companion>();
     View dialogView = null;
     View mainView = null;
+    MainActivity mainActivity = null;
     /*
     1 - connect to server, get id, send nickname
     2 - get list of available companions
@@ -49,7 +52,13 @@ public class SocketThread extends Thread {
     9 - choose companion
      */
 
+    final static int WAIT = 0;
     final static int CONNECT_TO_SERVER = 1;
+    final static int LOG_IN = 11;
+    final static int REGISTER = 12;
+    final static int THIS_NAME_ALREADY_EXISTS = 13;
+    final static int ACCOUNT_IS_NOT_FOUND = 14;
+    final static int WRONG_PASSWORD = 15;
     final static int GET_COMPANIONS = 2;
     final static int SEND_MESSAGE = 3;
     final static int RENEW_DIALOG = 4;
@@ -74,6 +83,8 @@ public class SocketThread extends Thread {
     synchronized public void setDialogRecView(RecyclerView view){this.dialogRecView = view;}
     synchronized public void setMainRecView(RecyclerView view){this.mainRecView = view;}
     synchronized public void setCompaionId(Integer compaionId){this.companionId = compaionId;}
+    synchronized public void setPassword(String password){this.password = password;}
+    synchronized public void setMainActivity(MainActivity mainActivity){this.mainActivity = mainActivity;}
 
     @Override
     public void run() {
@@ -85,20 +96,83 @@ public class SocketThread extends Thread {
             JSONObject jIncoming = null;
             JSONArray jIncomingMessages = null;
             switch (command){
+                case WAIT:
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 case CONNECT_TO_SERVER:
                     try{
                         fromserver = new Socket(ip, 4444);
                         in = new BufferedReader(new InputStreamReader(fromserver.getInputStream()));
                         out = new PrintWriter(fromserver.getOutputStream(), true);
-                        away.put("command", CONNECT_TO_SERVER);
-                        away.put("data", nickName);
+                        mainView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mainActivity.makeToast("Connected successfully");
+                            }
+                        });
+                        command = WAIT;
+//                        away.put("command", CONNECT_TO_SERVER);
+//                        away.put("data", nickName);
+//                        out.println(away.toString());
+//                        incoming = in.readLine();
+//                        jIncoming = new JSONObject(incoming);
+//                        id = jIncoming.getInt("data");
+//                        command = WAIT_GET_COMPANIONS;
+                    }
+                        catch (IOException e){e.printStackTrace(); }
+                        //catch (JSONException e){e.printStackTrace();}
+                    break;
+                case LOG_IN:
+                    try {
+                        away.put("command", LOG_IN);
+                        away.put("nickName", nickName);
+                        away.put("password", password);
                         out.println(away.toString());
                         incoming = in.readLine();
                         jIncoming = new JSONObject(incoming);
-                        id = jIncoming.getInt("data");
-                        command = WAIT_GET_COMPANIONS; }
-                        catch (IOException e){e.printStackTrace(); }
-                        catch (JSONException e){e.printStackTrace();}
+                        id = jIncoming.getInt("clientId");
+
+                        mainView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mainActivity.makeToast("Logged in");
+                            }
+                        });
+
+                        command = GET_COMPANIONS;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    break;
+                case REGISTER:
+                    try {
+                        away.put("command", REGISTER);
+                        away.put("nickName", nickName);
+                        away.put("password", password);
+                        out.println(away.toString());
+                        incoming = in.readLine();
+                        jIncoming = new JSONObject(incoming);
+                        id = jIncoming.getInt("clientId");
+
+                        mainView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mainActivity.makeToast("Registered");
+                            }
+                        });
+
+                        command = GET_COMPANIONS;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }
                     break;
                 case GET_COMPANIONS:
                     try{

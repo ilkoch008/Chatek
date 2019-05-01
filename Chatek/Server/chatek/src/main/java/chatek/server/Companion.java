@@ -4,10 +4,12 @@ public class Companion {
     public String name = " ";
     public Integer id;
     private boolean availability = true;
-    public Companion(String name, Integer id, Boolean availability){
+    public String password = "";
+    public Companion(String name, Integer id, Boolean availability, String password){
         this.name = name;
         this.id = id;
         this.availability = availability;
+        this.password = password;
     }
 
     public void isAvailable(){ availability = true; }

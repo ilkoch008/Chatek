@@ -17,14 +17,14 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
     var listt = ArrayList<Message>()
     lateinit var req_activity: FragmentActivity
     private lateinit var router: Router
-    var owner : String = " "
+    var clientId : Int = 0
 
     fun listt_clear(){
         listt.clear()
     }
 
-    fun ownner_define(owner : String){
-        this.owner = owner
+    fun ownner_define(owner : Int){
+        this.clientId = owner
     }
 
     fun listt_define(list: ArrayList<Message>){
@@ -41,9 +41,9 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
 
 
     override fun getItemViewType(position: Int): Int {
-        when(listt[position].owner){
-            "Server" -> return 0
-            owner -> return 1
+        when(listt[position].id){
+            0 -> return 0
+            clientId -> return 1
             else -> return 2
         }
     }

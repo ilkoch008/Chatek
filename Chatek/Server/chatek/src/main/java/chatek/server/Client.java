@@ -14,18 +14,35 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.google.gson.*;
 
 public class Client extends Thread {
+
+    final static int EVERYTHING_OK = 0;
+    final static int CONNECT_TO_SERVER = 1;
+    final static int LOG_IN = 11;
+    final static int REGISTER = 12;
+    final static int THIS_NAME_ALREADY_EXISTS = 13;
+    final static int ACCOUNT_IS_NOT_FOUND = 14;
+    final static int WRONG_PASSWORD = 15;
+    final static int GET_COMPANIONS = 2;
+    final static int SEND_MESSAGE = 3;
+    final static int RENEW_DIALOG = 4;
+    final static int WAIT_GET_COMPANIONS = 5;
+    final static int WAIT_RENEW_DIALOG = 6;
+    final static int CHECK_NEW_MESSAGES = 7;
+    final static int CHECK_NEW_COMPANIONS = 8;
+    final static int CHOOSE_COMPANION = 9;
+
     ArrayList<Integer> key = new ArrayList<>();
-    int clientId;
+    Integer clientId = null;
     int companionId;
     String nickName = " ";
+    String password = "";
     Socket fromClient = null;
     //ArrayList<Message> messages = new ArrayList<>();
     Companions companions = null;
     ConcurrentHashMap<ArrayList<Integer>, Conversation> conversations = null;
     Conversation conversation = null;
 
-    public void SetClient(int clientId, Socket fromClient){
-        this.clientId = clientId;
+    public void SetClient( Socket fromClient){
         this.fromClient = fromClient;
     }
 
@@ -64,20 +81,56 @@ public class Client extends Thread {
                 jInput = (JsonObject) parser.parse(input);
                 command = jInput.get("command").getAsInt();
                 switch (command){
-                    case 1:
-                        nickName = jInput.get("data").getAsString();
-                        System.out.println(nickName);
-                        jOutput.addProperty("data", clientId);
-                        out.println(jOutput.toString());
-                        companions.Add(new Companion(nickName, clientId, true));
-                        Thread.yield();
+                    case CONNECT_TO_SERVER:
+//                        nickName = jInput.get("data").getAsString();
+//                        System.out.println(nickName);
+//                        jOutput.addProperty("data", clientId);
+//                        out.println(jOutput.toString());
+//                        //companions.Add(new Companion(nickName, clientId, true));
+//                        Thread.yield();
                         break;
-                    case 2:
+                    case LOG_IN:
+                        nickName = jInput.get("nickName").getAsString();
+                        password = jInput.get("password").getAsString();
+                        Companion companion = companions.getCompanion(nickName);
+                        if(companion == null){
+                            jOutput.addProperty("command", ACCOUNT_IS_NOT_FOUND);
+                            out.println(jOutput.toString());
+                            break;
+                        }
+                        if(!companion.password.equals(password)){
+                            jOutput.addProperty("command", WRONG_PASSWORD);
+                            out.println(jOutput.toString());
+                            break;
+                        }
+
+                        clientId = companion.id;
+                        jOutput.addProperty("clientId", clientId);
+                        out.println(jOutput.toString());
+                        companions.getCompanion(nickName).isAvailable();
+                        break;
+                    case REGISTER:
+                        nickName = jInput.get("nickName").getAsString();
+                        password = jInput.get("password").getAsString();
+                        if(companions.isNotUnique(nickName)){
+                            jOutput.addProperty("command", THIS_NAME_ALREADY_EXISTS);
+                            out.println(jOutput.toString());
+                            break;
+                        }
+                        synchronized(this) {
+                        clientId = companions.companions.size();
+                        companions.Add(new Companion(nickName, clientId, true, password));
+                        }
+                        jOutput.addProperty("clientId", clientId);
+                        out.println(jOutput.toString());
+                        companions.getCompanion(nickName).isAvailable();
+                        break;
+                    case GET_COMPANIONS:
                         output = gson.toJson(companions);
                         out.println(output);
                         Thread.yield();
                         break;
-                    case 3:
+                    case SEND_MESSAGE:
                         Message message = new Message.Builder()
                                 .messageIs(jInput.get("message").getAsString())
                                 .idIs(jInput.get("id").getAsInt())
@@ -96,7 +149,7 @@ public class Client extends Thread {
                         out.println(output);
                         Thread.yield();
                         break;
-                    case 4:
+                    case RENEW_DIALOG:
                         try {
                             output = gson.toJson(conversation.getConversation());
                         } catch (ConcurrentModificationException e){
@@ -108,14 +161,14 @@ public class Client extends Thread {
                         out.println(output);
                         Thread.yield();
                         break;
-                    case 5:
+                    case WAIT_GET_COMPANIONS:
                         out.println();
                         Thread.yield();
                         break;
-                    case 6:
+                    case WAIT_RENEW_DIALOG:
 
                         break;
-                    case 9:
+                    case CHOOSE_COMPANION:
                         key.clear();
                         companionId = jInput.get("companionId").getAsInt();
                         if (companionId == 0) {
@@ -140,7 +193,9 @@ public class Client extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        companions.companions.get(clientId).isNotAvailable();
+        if (clientId != null) {
+            companions.companions.get(clientId).isNotAvailable();
+        }
         System.out.println("Client disconnected");
 
     }

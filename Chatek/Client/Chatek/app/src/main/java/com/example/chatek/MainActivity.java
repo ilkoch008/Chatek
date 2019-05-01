@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SocketThread socketThread = new SocketThread();
+        socketThread.setMainActivity(this);
 
 
         final Router router = new Router(this, R.id.fragment_container);
@@ -33,15 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
         final HelloFragment hellofragment = new HelloFragment();
         router.navigateTo(false, hellofragment);
-        final GetPropertiesFragment getPropertiesFragment = new GetPropertiesFragment();
-        getPropertiesFragment.set_SocketThread(socketThread);
+        final GetIpAndConnectFragment getIpAndConnectFragment = new GetIpAndConnectFragment();
+        getIpAndConnectFragment.set_SocketThread(socketThread);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                router.navigateTo(false, getPropertiesFragment);
+                router.navigateTo(false, getIpAndConnectFragment);
                 getSupportActionBar().show();
             }
         }, 2000);
+    }
+
+    public void makeToast(String toast){
+        Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
     }
 
 

@@ -20,7 +20,7 @@ public class App
     private static ConcurrentHashMap<ArrayList<Integer>, Conversation> conversations = new ConcurrentHashMap<>();
 
     public static void main( String[] args ) {
-        companions.Add(new Companion("Server", 0, true));
+        companions.Add(new Companion("Server", 0, true, "ritnbritniwrnbowrtnpwirunbwriptu"));
         //companions.add(new Companion("Server1", 1));
         for (int i = 0; i < 100; i++){
             for (int j = i; j < 100; j++) {
@@ -41,8 +41,8 @@ public class App
             System.exit(-1);
         }
 
-
-        for(int i = 1; i < 100; i++){
+        while(companions.companions.size() < 100){
+//        for(int i = 1; i < 100; i++){
             Client client = new Client();
             Socket fromclient = null;
             try {
@@ -53,7 +53,7 @@ public class App
                 System.out.println("Can't accept");
                 System.exit(-1);
             }
-            client.SetClient(i, fromclient);
+            client.SetClient(fromclient);
             client.setCompanions(companions);
             client.setConversations(conversations);
             client.start();
