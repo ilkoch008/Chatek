@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SocketThread socketThread = new SocketThread();
+        final SocketThread socketThread = new SocketThread();
         socketThread.setMainActivity(this);
 
 
@@ -40,14 +40,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 router.navigateTo(false, getIpAndConnectFragment);
+                socketThread.setRouter(router);
                 getSupportActionBar().show();
             }
         }, 2000);
     }
 
-    public void makeToast(String toast){
-        Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
-    }
+//    public void makeToast(String toast){
+//        Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_SHORT).show();
+//    }
 
 
     @Override

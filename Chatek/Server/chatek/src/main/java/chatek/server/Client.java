@@ -41,6 +41,7 @@ public class Client extends Thread {
     Companions companions = null;
     ConcurrentHashMap<ArrayList<Integer>, Conversation> conversations = null;
     Conversation conversation = null;
+    public boolean LOGGED_IN = false;
 
     public void SetClient( Socket fromClient){
         this.fromClient = fromClient;
@@ -96,18 +97,17 @@ public class Client extends Thread {
                         if(companion == null){
                             jOutput.addProperty("command", ACCOUNT_IS_NOT_FOUND);
                             out.println(jOutput.toString());
-                            break;
-                        }
-                        if(!companion.password.equals(password)){
+                        } else if(!companion.password.equals(password)){
                             jOutput.addProperty("command", WRONG_PASSWORD);
                             out.println(jOutput.toString());
-                            break;
+                        } else {
+                            LOGGED_IN = true;
+                            clientId = companion.id;
+                            jOutput.addProperty("clientId", clientId);
+                            jOutput.addProperty("command", EVERYTHING_OK);
+                            out.println(jOutput.toString());
+                            companions.getCompanion(nickName).isAvailable();
                         }
-
-                        clientId = companion.id;
-                        jOutput.addProperty("clientId", clientId);
-                        out.println(jOutput.toString());
-                        companions.getCompanion(nickName).isAvailable();
                         break;
                     case REGISTER:
                         nickName = jInput.get("nickName").getAsString();
@@ -115,28 +115,33 @@ public class Client extends Thread {
                         if(companions.isNotUnique(nickName)){
                             jOutput.addProperty("command", THIS_NAME_ALREADY_EXISTS);
                             out.println(jOutput.toString());
-                            break;
+                        } else {
+                            synchronized (this) {
+                                clientId = companions.companions.size();
+                                companions.Add(new Companion(nickName, clientId, true, password));
+                            }
+                            jOutput.addProperty("clientId", clientId);
+                            jOutput.addProperty("command", EVERYTHING_OK);
+                            out.println(jOutput.toString());
+                            companions.getCompanion(nickName).isAvailable();
+                            LOGGED_IN = true;
                         }
-                        synchronized(this) {
-                        clientId = companions.companions.size();
-                        companions.Add(new Companion(nickName, clientId, true, password));
-                        }
-                        jOutput.addProperty("clientId", clientId);
-                        out.println(jOutput.toString());
-                        companions.getCompanion(nickName).isAvailable();
                         break;
                     case GET_COMPANIONS:
-                        output = gson.toJson(companions);
-                        out.println(output);
-                        Thread.yield();
+                        if(LOGGED_IN) {
+                            output = gson.toJson(companions);
+                            out.println(output);
+                            Thread.yield();
+                        }
                         break;
                     case SEND_MESSAGE:
-                        Message message = new Message.Builder()
-                                .messageIs(jInput.get("message").getAsString())
-                                .idIs(jInput.get("id").getAsInt())
-                                .ownerIs(jInput.get("owner").getAsString())
-                                .build();
-                        conversation.Add(message);
+                        if(LOGGED_IN) {
+                            Message message = new Message.Builder()
+                                    .messageIs(jInput.get("message").getAsString())
+                                    .idIs(jInput.get("id").getAsInt())
+                                    .ownerIs(jInput.get("owner").getAsString())
+                                    .build();
+                            conversation.Add(message);
 //                        if(key.contains(0)) {
 //                        Message response = new Message.Builder()
 //                                .messageIs("etggwrry")
@@ -145,42 +150,50 @@ public class Client extends Thread {
 //                                .build();
 //                        conversation.Add(response);
 //                        }
-                        output = gson.toJson(conversation.getConversation());
-                        out.println(output);
-                        Thread.yield();
+                            output = gson.toJson(conversation.getConversation());
+                            out.println(output);
+                            Thread.yield();
+                        }
                         break;
                     case RENEW_DIALOG:
-                        try {
-                            output = gson.toJson(conversation.getConversation());
-                        } catch (ConcurrentModificationException e){
-                            e.printStackTrace();
-                            companions.companions.get(clientId).isNotAvailable();
-                            Thread.currentThread().interrupt();
-                        }
+                        if(LOGGED_IN) {
+                            try {
+                                output = gson.toJson(conversation.getConversation());
+                            } catch (ConcurrentModificationException e) {
+                                e.printStackTrace();
+                                companions.companions.get(clientId).isNotAvailable();
+                                Thread.currentThread().interrupt();
+                            }
 
-                        out.println(output);
-                        Thread.yield();
+                            out.println(output);
+                        }
+                            Thread.yield();
+
                         break;
                     case WAIT_GET_COMPANIONS:
-                        out.println();
+                        if(LOGGED_IN) {
+                            out.println();
+                        }
                         Thread.yield();
                         break;
                     case WAIT_RENEW_DIALOG:
 
                         break;
                     case CHOOSE_COMPANION:
-                        key.clear();
-                        companionId = jInput.get("companionId").getAsInt();
-                        if (companionId == 0) {
-                            key.add(0);
-                            key.add(0);
-                        } else {
-                            key.add(companionId);
-                            key.add(clientId);
-                            Collections.sort(key);
+                        if(LOGGED_IN) {
+                            key.clear();
+                            companionId = jInput.get("companionId").getAsInt();
+                            if (companionId == 0) {
+                                key.add(0);
+                                key.add(0);
+                            } else {
+                                key.add(companionId);
+                                key.add(clientId);
+                                Collections.sort(key);
+                            }
+                            conversation = conversations.get(key);
+                            out.println("ok");
                         }
-                        conversation = conversations.get(key);
-                        out.println("ok");
                         Thread.yield();
                         break;
                 }
@@ -195,6 +208,7 @@ public class Client extends Thread {
         }
         if (clientId != null) {
             companions.companions.get(clientId).isNotAvailable();
+            LOGGED_IN = false;
         }
         System.out.println("Client disconnected");
 

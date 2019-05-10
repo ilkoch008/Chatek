@@ -32,15 +32,16 @@ class LogInFragment : Fragment() {
         var editNick : EditText = layout.findViewById(R.id.editNick) as EditText
         var button_enter : Button = layout.findViewById(R.id.button_enter) as Button
         var button_register : Button = layout.findViewById(R.id.button_register) as Button
+        socketThread.setContext(requireContext())
 
         button_enter.setOnClickListener {
             socketThread.setNickName(editNick.text.toString())
             socketThread.setPassword(editPassword.text.toString())
-            val mainFragment = MainFragment()
-            mainFragment.set_SocketThread(socketThread)
+            //val mainFragment = MainFragment()
+            //mainFragment.set_SocketThread(socketThread)
             socketThread.setCommand(LOG_IN)
             //socketThread.setNickName(nickName)
-            router.navigateTo(true, mainFragment)
+            //router.navigateTo(true, mainFragment)
         }
 
         button_register.setOnClickListener {

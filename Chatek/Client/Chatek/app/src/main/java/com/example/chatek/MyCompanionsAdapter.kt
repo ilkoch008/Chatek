@@ -17,13 +17,18 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
         this.socketThread = socketThread
     }
 
-    var listt = ArrayList<Companion>()
+    public var listt = ArrayList<Companion>()
     lateinit var req_activity: FragmentActivity
     private lateinit var router: Router
 
     fun listt_define(list: ArrayList<Companion>){
         listt = list
     }
+
+    fun get_listt() : ArrayList<Companion> {
+        return listt
+    }
+
 
     fun activity_define(activity : FragmentActivity){
         req_activity = activity

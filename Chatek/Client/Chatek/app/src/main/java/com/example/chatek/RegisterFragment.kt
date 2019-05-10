@@ -33,18 +33,19 @@ class RegisterFragment : Fragment() {
         var getPassword1: EditText = layout.findViewById(R.id.editPassword1) as EditText
         var getNickname: EditText = layout.findViewById(R.id.editNick) as EditText
         var button: Button = layout.findViewById(R.id.button_ip) as Button
+        socketThread.setContext(requireContext())
 
         button.setOnClickListener {
             if (getPassword.text.toString() != getPassword1.text.toString()) {
                 Toast.makeText(requireContext(), "Passwords not equal", Toast.LENGTH_SHORT).show()
             } else {
-                val mainFragment = MainFragment()
-                mainFragment.set_SocketThread(socketThread)
+                //val mainFragment = MainFragment()
+                //mainFragment.set_SocketThread(socketThread)
                 socketThread.setPassword(getPassword.text.toString())
                 socketThread.setNickName(getNickname.text.toString())
                 socketThread.setCommand(12)
                 //socketThread.setNickName(nickName)
-                router.navigateTo(true, mainFragment)
+                //router.navigateTo(true, mainFragment)
             }
         }
 

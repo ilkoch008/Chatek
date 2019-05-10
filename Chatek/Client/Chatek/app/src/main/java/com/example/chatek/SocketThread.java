@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class SocketThread extends Thread {
     private String incoming = " ";
     private String password = " ";
     private int command;
+    private int command_from_server;
     public int id;
     private int companionId;
     private  RecyclerView dialogRecView;
@@ -40,6 +42,9 @@ public class SocketThread extends Thread {
     View dialogView = null;
     View mainView = null;
     MainActivity mainActivity = null;
+    Context currentContext = null;
+    SocketThread socketThread = this;
+    Router router = null;
     /*
     1 - connect to server, get id, send nickname
     2 - get list of available companions
@@ -85,6 +90,8 @@ public class SocketThread extends Thread {
     synchronized public void setCompaionId(Integer compaionId){this.companionId = compaionId;}
     synchronized public void setPassword(String password){this.password = password;}
     synchronized public void setMainActivity(MainActivity mainActivity){this.mainActivity = mainActivity;}
+    synchronized public void setRouter(Router router){this.router = router;}
+    synchronized public void setContext(Context context){this.currentContext = context;}
 
     @Override
     public void run() {
@@ -108,20 +115,14 @@ public class SocketThread extends Thread {
                         fromserver = new Socket(ip, 4444);
                         in = new BufferedReader(new InputStreamReader(fromserver.getInputStream()));
                         out = new PrintWriter(fromserver.getOutputStream(), true);
-                        mainView.post(new Runnable() {
+                        mainActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mainActivity.makeToast("Connected successfully");
+                                //mainActivity.makeToast("Connected successfully");
+                                Toast.makeText(currentContext, "Connected successfully", Toast.LENGTH_SHORT).show();
                             }
                         });
                         command = WAIT;
-//                        away.put("command", CONNECT_TO_SERVER);
-//                        away.put("data", nickName);
-//                        out.println(away.toString());
-//                        incoming = in.readLine();
-//                        jIncoming = new JSONObject(incoming);
-//                        id = jIncoming.getInt("data");
-//                        command = WAIT_GET_COMPANIONS;
                     }
                         catch (IOException e){e.printStackTrace(); }
                         //catch (JSONException e){e.printStackTrace();}
@@ -134,16 +135,43 @@ public class SocketThread extends Thread {
                         out.println(away.toString());
                         incoming = in.readLine();
                         jIncoming = new JSONObject(incoming);
-                        id = jIncoming.getInt("clientId");
+                        command_from_server = jIncoming.getInt("command");
+                        if (command_from_server == 0) {
+                            id = jIncoming.getInt("clientId");
+                            MainFragment mainFragment = new MainFragment();
+                            mainFragment.set_SocketThread(socketThread);
+                            router.navigateTo(false, mainFragment);
+                            command = GET_COMPANIONS;
+                            mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //mainActivity.makeToast("Logged in");
+                                    Toast.makeText(currentContext, "Logged in", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        Thread.yield();
+                        if (command_from_server == ACCOUNT_IS_NOT_FOUND){
+                            command = WAIT;
+                            mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //mainActivity.makeToast("Account is not found");
+                                    Toast.makeText(currentContext, "Account is not found", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        if (command_from_server == WRONG_PASSWORD){
+                            command = WAIT;
+                            mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //mainActivity.makeToast("Wrong password");
+                                    Toast.makeText(currentContext, "Wrong password", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
-                        mainView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mainActivity.makeToast("Logged in");
-                            }
-                        });
-
-                        command = GET_COMPANIONS;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e){
@@ -158,16 +186,34 @@ public class SocketThread extends Thread {
                         out.println(away.toString());
                         incoming = in.readLine();
                         jIncoming = new JSONObject(incoming);
-                        id = jIncoming.getInt("clientId");
+                        command_from_server = jIncoming.getInt("command");
+                        if(command_from_server == THIS_NAME_ALREADY_EXISTS) {
+                            command = WAIT;
+                            mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //mainActivity.makeToast("This name already exists");
+                                    Toast.makeText(currentContext, "This name already exists", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            Thread.yield();
+                        }
+                        if(command_from_server == 0) {
+                            MainFragment mainFragment = new MainFragment();
+                            mainFragment.set_SocketThread(socketThread);
+                            router.navigateTo(false, mainFragment);
+                            mainActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //mainActivity.makeToast("Registered");
+                                    Toast.makeText(currentContext, "Registered", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            id = jIncoming.getInt("clientId");
+                            command = GET_COMPANIONS;
+                            Thread.yield();
+                        }
 
-                        mainView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mainActivity.makeToast("Registered");
-                            }
-                        });
-
-                        command = GET_COMPANIONS;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e){
@@ -190,14 +236,17 @@ public class SocketThread extends Thread {
                                     jIncomingMessages.getJSONObject(j).getInt("id"),
                                     jIncomingMessages.getJSONObject(j).getBoolean("availability")));
                         }
-                        mAdapter.listt_define(companions);
-                        mainView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mainRecView.getRecycledViewPool().clear();
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        });
+                        if(companions != null && mAdapter != null) {
+                            mAdapter.listt_define(companions);
+                            mainView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mainRecView.getRecycledViewPool().clear();
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                        Thread.yield();
                     } catch (IOException e){e.printStackTrace();}
                     catch (JSONException e){e.printStackTrace();}
                     command = WAIT_GET_COMPANIONS;
@@ -254,15 +303,15 @@ public class SocketThread extends Thread {
                         jIncomingMessages = new JSONArray(incoming);
                         newMessages.clear();
                         messages.clear();
-                        for (int i = jIncomingMessages.length()-1; i >= 0; i--){
+                        for (int i = jIncomingMessages.length() - 1; i >= 0; i--) {
                             newMessages.add(new Message.Builder()
                                     .idIs(jIncomingMessages.getJSONObject(i).getInt("id"))
                                     .messageIs(jIncomingMessages.getJSONObject(i).getString("message"))
                                     .ownerIs(jIncomingMessages.getJSONObject(i).getString("owner"))
                                     .build());
                         }
-                        //if (mmAdapter.get_listt_size() != newMessages.size()) {
-                            messages = newMessages;
+                        messages = newMessages;
+                        if(mmAdapter != null) {
                             mmAdapter.listt_define(messages);
                             dialogView.post(new Runnable() {
                                 @Override
@@ -271,9 +320,8 @@ public class SocketThread extends Thread {
                                     mmAdapter.notifyDataSetChanged();
                                 }
                             });
-                        //}
-                        //Thread.sleep(25);
-                        System.out.println();
+                        }
+                        //System.out.println();
                     }
                         catch (JSONException e) { e.printStackTrace(); }
                         catch (IOException e) { e.printStackTrace(); }
