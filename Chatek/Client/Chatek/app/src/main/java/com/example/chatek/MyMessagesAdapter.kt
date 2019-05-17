@@ -12,7 +12,7 @@ import android.view.animation.AlphaAnimation
 
 
 
-class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
+class MyMessagesAdapterAdapter : RecyclerView.Adapter<MessagesClickableViewHolder>() {
 
     var listt = ArrayList<Message>()
     lateinit var req_activity: FragmentActivity
@@ -48,16 +48,16 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchClickableViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagesClickableViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         when (viewType){
-            0 ->return SearchClickableViewHolder(
+            0 ->return MessagesClickableViewHolder(
                     inflater.inflate(R.layout.messages, parent, false),
                     ::onItemClick)
-            1 ->return SearchClickableViewHolder(
+            1 ->return MessagesClickableViewHolder(
                     inflater.inflate(R.layout.my_message, parent, false),
                     ::onItemClick)
-            else -> return SearchClickableViewHolder(
+            else -> return MessagesClickableViewHolder(
                     inflater.inflate(R.layout.companions_message, parent, false),
                     ::onItemClick)
         }
@@ -65,10 +65,11 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<SearchClickableViewHolder>
 
     override fun getItemCount(): Int = listt.size
 
-    override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MessagesClickableViewHolder, position: Int) {
         if (position < listt.size) {
             holder.setText((listt[position]).message)
             holder.setOwner((listt[position]).owner)
+            holder.setTime((listt[position]).time)
             //setFadeAnimation(holder.itemView)
         }
 //        else {
@@ -97,6 +98,7 @@ class MessagesClickableViewHolder(view : View, private val clickListener
                                         : (View, Int) -> Unit ) : RecyclerView.ViewHolder(view) {
     //private val title: ImageView = view.findViewById(R.id.title)
     private val text: TextView = view.findViewById(R.id.searching_text) as TextView
+    public val localView : View = view
 
     init {
         view.setOnClickListener {
@@ -106,5 +108,15 @@ class MessagesClickableViewHolder(view : View, private val clickListener
 
     fun setText(text: String) {
         this.text.text = text
+    }
+
+    fun setOwner(owner: String){
+        val thisOwner: TextView = localView.findViewById(R.id.searching_text_name) as TextView
+        thisOwner.text = owner
+    }
+
+    fun setTime(time: String){
+        val date: TextView = localView.findViewById(R.id.date_time) as TextView
+        date.text = time
     }
 }

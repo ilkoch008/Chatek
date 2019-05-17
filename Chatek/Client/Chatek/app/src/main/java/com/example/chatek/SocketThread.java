@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class SocketThread extends Thread {
     private int companionId;
     private  RecyclerView dialogRecView;
     private  RecyclerView mainRecView;
+    private boolean connected = false;
     ArrayList<Message> messages = new ArrayList<Message>();
     ArrayList<Message> newMessages = new ArrayList<Message>();
     ArrayList<Companion> companions = new ArrayList<Companion>();
@@ -92,12 +94,13 @@ public class SocketThread extends Thread {
     synchronized public void setMainActivity(MainActivity mainActivity){this.mainActivity = mainActivity;}
     synchronized public void setRouter(Router router){this.router = router;}
     synchronized public void setContext(Context context){this.currentContext = context;}
+    synchronized public boolean isConnected(){return connected;}
 
     @Override
     public void run() {
         while (true) {
             if (Thread.interrupted()) {
-                interrupt();
+                break;
             }
             JSONObject away = new JSONObject();
             JSONObject jIncoming = null;
@@ -115,17 +118,22 @@ public class SocketThread extends Thread {
                         fromserver = new Socket(ip, 4444);
                         in = new BufferedReader(new InputStreamReader(fromserver.getInputStream()));
                         out = new PrintWriter(fromserver.getOutputStream(), true);
+                        connected = true;
+                        final LogInFragment logInFragment = new LogInFragment();
+                        logInFragment.set_SocketThread(socketThread);
+                        router.navigateTo(false, logInFragment);
+                        Thread.sleep(5);
                         mainActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 //mainActivity.makeToast("Connected successfully");
-                                Toast.makeText(currentContext, "Connected successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(logInFragment.requireContext(), "Connected successfully", Toast.LENGTH_SHORT).show();
                             }
                         });
                         command = WAIT;
                     }
                         catch (IOException e){e.printStackTrace(); }
-                        //catch (JSONException e){e.printStackTrace();}
+                        catch (InterruptedException e){e.printStackTrace();}
                     break;
                 case LOG_IN:
                     try {
@@ -266,12 +274,13 @@ public class SocketThread extends Thread {
                         messages.clear();
                         incoming = in.readLine();
                         jIncomingMessages = new JSONArray(incoming);
-                        for (int i = jIncomingMessages.length()-1; i >= 0; i--){
+                        for (int i = jIncomingMessages.length() - 1; i >= 0; i--) {
                             messages.add(new Message.Builder()
-                            .idIs(jIncomingMessages.getJSONObject(i).getInt("id"))
-                            .messageIs(jIncomingMessages.getJSONObject(i).getString("message"))
-                            .ownerIs(jIncomingMessages.getJSONObject(i).getString("owner"))
-                            .build());
+                                    .idIs(jIncomingMessages.getJSONObject(i).getInt("id"))
+                                    .messageIs(jIncomingMessages.getJSONObject(i).getString("message"))
+                                    .ownerIs(jIncomingMessages.getJSONObject(i).getString("owner"))
+                                    .timeIs(jIncomingMessages.getJSONObject(i).getString("time"))
+                                    .build());
                         }
 
 
@@ -308,10 +317,11 @@ public class SocketThread extends Thread {
                                     .idIs(jIncomingMessages.getJSONObject(i).getInt("id"))
                                     .messageIs(jIncomingMessages.getJSONObject(i).getString("message"))
                                     .ownerIs(jIncomingMessages.getJSONObject(i).getString("owner"))
+                                    .timeIs(jIncomingMessages.getJSONObject(i).getString("time"))
                                     .build());
                         }
                         messages = newMessages;
-                        if(mmAdapter != null) {
+                        if (mmAdapter != null) {
                             mmAdapter.listt_define(messages);
                             dialogView.post(new Runnable() {
                                 @Override
@@ -322,11 +332,15 @@ public class SocketThread extends Thread {
                             });
                         }
                         //System.out.println();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                        catch (JSONException e) { e.printStackTrace(); }
-                        catch (IOException e) { e.printStackTrace(); }
-                        //catch (InterruptedException e){e.printStackTrace();}
+                    //catch (InterruptedException e){e.printStackTrace();}
+                    if (command != SEND_MESSAGE && command != GET_COMPANIONS) {
                         command = CHOOSE_COMPANION;
+                    }
                     break;
                 case WAIT_GET_COMPANIONS:
                     i++;
@@ -351,7 +365,9 @@ public class SocketThread extends Thread {
                         }
                     } else {
                         i=0;
-                        command = RENEW_DIALOG;
+                        if (command != SEND_MESSAGE && command != GET_COMPANIONS) {
+                            command = RENEW_DIALOG;
+                        }
                     }
                     break;
                 case CHOOSE_COMPANION:

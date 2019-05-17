@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    final Router router = new Router(this, R.id.fragment_container);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         socketThread.setMainActivity(this);
 
 
-        final Router router = new Router(this, R.id.fragment_container);
+        //final Router router = new Router(this, R.id.fragment_container);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         router.navigateTo(false, hellofragment);
         final GetIpAndConnectFragment getIpAndConnectFragment = new GetIpAndConnectFragment();
         getIpAndConnectFragment.set_SocketThread(socketThread);
+        getIpAndConnectFragment.set_mainActivity(this);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "ТЫК", Toast.LENGTH_SHORT).show();
+            SettingsFragment settingsFragment = new SettingsFragment();
+            router.navigateTo(true, settingsFragment);
             return true;
         }
 

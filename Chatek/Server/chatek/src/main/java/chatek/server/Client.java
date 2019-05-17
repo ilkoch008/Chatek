@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.*;
 
@@ -140,6 +139,7 @@ public class Client extends Thread {
                                     .messageIs(jInput.get("message").getAsString())
                                     .idIs(jInput.get("id").getAsInt())
                                     .ownerIs(jInput.get("owner").getAsString())
+                                    .timeIs(getCurrentTime())
                                     .build();
                             conversation.Add(message);
 //                        if(key.contains(0)) {
@@ -212,5 +212,16 @@ public class Client extends Thread {
         }
         System.out.println("Client disconnected");
 
+    }
+
+
+    public static String getCurrentTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.roll(Calendar.HOUR_OF_DAY, 1);
+        Date date = cal.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String formattedDate=dateFormat.format(date);
+        System.out.println("Current time of the day using Calendar - 24 hour format: "+ formattedDate);
+        return formattedDate;
     }
 }

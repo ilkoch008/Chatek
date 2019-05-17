@@ -66,4 +66,14 @@ class DialogFragment  : Fragment() {
         return layout
     }
 
+    override fun onResume() {
+        super.onResume()
+        socketThread.setCommand(CHOOSE_COMPANION)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        socketThread.setCommand(CHOOSE_COMPANION)
+    }
+
 }

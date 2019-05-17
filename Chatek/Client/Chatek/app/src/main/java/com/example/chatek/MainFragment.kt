@@ -56,4 +56,9 @@ class MainFragment : Fragment() {
         super.onResume()
         socketThread.setCommand(GET_COMPANIONS)
     }
+
+    override fun onStart() {
+        super.onStart()
+        socketThread.setCommand(GET_COMPANIONS)
+    }
 }

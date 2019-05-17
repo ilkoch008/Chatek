@@ -17,4 +17,13 @@ public class AppTest
     {
         assertTrue( true );
     }
+
+    @Test
+    public void testingDate()
+    {
+        Client client = new Client();
+        String date = client.getCurrentTime();
+        assertTrue( true );
+    }
+
 }
