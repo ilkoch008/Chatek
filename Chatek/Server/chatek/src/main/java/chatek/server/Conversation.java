@@ -1,13 +1,14 @@
 package chatek.server;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Conversation {
-    private ArrayList<Message> conversation = new ArrayList<>();
+    private CopyOnWriteArrayList<Message> conversation = new CopyOnWriteArrayList<>();
     synchronized public void Add(Message message){
         conversation.add(message);
     }
-    synchronized public ArrayList<Message> getConversation(){
+    synchronized public CopyOnWriteArrayList<Message> getConversation(){
         return conversation;
     }
 }

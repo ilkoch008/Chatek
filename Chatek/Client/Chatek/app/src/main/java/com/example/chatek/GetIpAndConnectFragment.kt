@@ -37,25 +37,18 @@ class GetIpAndConnectFragment : Fragment() {
         socketThread.setMainView(layout)
         var getIp : EditText = layout.findViewById(R.id.editIp) as EditText
         var button : Button = layout.findViewById(R.id.button_ip) as Button
-        socketThread.setCommand(1)
+        socketThread.setCommand(0)
+        socketThread.start();
 
         button.setOnClickListener {
-
-            var localSocketThread = SocketThread()
-            localSocketThread = socketThread
             ipAddress = getIp.text.toString()
-            localSocketThread.setIp(ipAddress)
-            //val logInFragment = LogInFragment()
-            //logInFragment.set_SocketThread(socketThread)
-
-            //socketThread.setNickName(nickName)
-            localSocketThread.start()
+            socketThread.setIp(ipAddress)
+            socketThread.setCommand(1)
             button.visibility = View.GONE
-            //router.navigateTo(false, logInFragment)
             Handler().postDelayed({
-                if(!localSocketThread.isConnected){
-                    localSocketThread.interrupt()
+                if(!socketThread.isConnected){
                     Toast.makeText(requireContext(), "Can't connect", Toast.LENGTH_SHORT).show()
+                    socketThread.setCommand(0)
                     button.visibility = View.VISIBLE
                 }
             }, 2000)

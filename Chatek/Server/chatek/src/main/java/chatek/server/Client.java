@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.gson.*;
 
@@ -22,6 +23,7 @@ public class Client extends Thread {
     final static int ACCOUNT_IS_NOT_FOUND = 14;
     final static int WRONG_PASSWORD = 15;
     final static int GET_COMPANIONS = 2;
+    final static int GET_DIFFERENCE_IN_DIALOGS = 21;
     final static int SEND_MESSAGE = 3;
     final static int RENEW_DIALOG = 4;
     final static int WAIT_GET_COMPANIONS = 5;
@@ -133,6 +135,8 @@ public class Client extends Thread {
                             Thread.yield();
                         }
                         break;
+                    case GET_DIFFERENCE_IN_DIALOGS:
+                        break;
                     case SEND_MESSAGE:
                         if(LOGGED_IN) {
                             Message message = new Message.Builder()
@@ -150,7 +154,11 @@ public class Client extends Thread {
 //                                .build();
 //                        conversation.Add(response);
 //                        }
-                            output = gson.toJson(conversation.getConversation());
+                            synchronized (this) {
+                                CopyOnWriteArrayList<Message> localConversation = conversation.getConversation();
+                                output = gson.
+                                        toJson(localConversation);
+                            }
                             out.println(output);
                             Thread.yield();
                         }
@@ -158,7 +166,11 @@ public class Client extends Thread {
                     case RENEW_DIALOG:
                         if(LOGGED_IN) {
                             try {
-                                output = gson.toJson(conversation.getConversation());
+                                synchronized (this) {
+                                    CopyOnWriteArrayList<Message> localConversation = conversation.getConversation();
+                                    output = gson.
+                                            toJson(localConversation);
+                                }
                             } catch (ConcurrentModificationException e) {
                                 e.printStackTrace();
                                 companions.companions.get(clientId).isNotAvailable();

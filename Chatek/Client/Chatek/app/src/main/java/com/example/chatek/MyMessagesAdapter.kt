@@ -41,11 +41,13 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<MessagesClickableViewHolde
 
 
     override fun getItemViewType(position: Int): Int {
-        when(listt[position].id){
-            0 -> return 0
-            clientId -> return 1
-            else -> return 2
-        }
+        if (position < listt.size && position >= 0) {
+            when (listt[position].id) {
+                0 -> return 0
+                clientId -> return 1
+                else -> return 2
+            }
+        } else {return 0}
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagesClickableViewHolder {
@@ -66,7 +68,7 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<MessagesClickableViewHolde
     override fun getItemCount(): Int = listt.size
 
     override fun onBindViewHolder(holder: MessagesClickableViewHolder, position: Int) {
-        if (position < listt.size) {
+        if (position < listt.size && position >= 0) {
             holder.setText((listt[position]).message)
             holder.setOwner((listt[position]).owner)
             holder.setTime((listt[position]).time)
@@ -79,7 +81,9 @@ class MyMessagesAdapterAdapter : RecyclerView.Adapter<MessagesClickableViewHolde
     }
 
     fun onItemClick(view: View, position: Int) {
-        Toast.makeText(view.context, listt[position].owner, Toast.LENGTH_SHORT).show()
+        if (position < listt.size && position >= 0) {
+            Toast.makeText(view.context, listt[position].owner, Toast.LENGTH_SHORT).show()
+        }
         //router = Router(req_activity, R.id.fragment_container)
         //val dialogfragment : DialogFragment = DialogFragment()
         //router.navigateTo(true, dialogfragment)
