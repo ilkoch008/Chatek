@@ -11,4 +11,5 @@ public class Conversation {
     synchronized public CopyOnWriteArrayList<Message> getConversation(){
         return conversation;
     }
+    synchronized public Integer getNumberOfMessages(){return conversation.size();}
 }

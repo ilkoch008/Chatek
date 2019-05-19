@@ -130,6 +130,7 @@ public class Client extends Thread {
                         break;
                     case GET_COMPANIONS:
                         if(LOGGED_IN) {
+                            companions.setNumbersOfMessagesInCompanions(clientId);
                             output = gson.toJson(companions);
                             out.println(output);
                             Thread.yield();

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Switch
 import com.example.chatek.SocketThread.*
 
 class LogInFragment : Fragment() {
@@ -32,6 +33,7 @@ class LogInFragment : Fragment() {
         var editNick : EditText = layout.findViewById(R.id.editNick) as EditText
         var button_enter : Button = layout.findViewById(R.id.button_enter) as Button
         var button_register : Button = layout.findViewById(R.id.button_register) as Button
+        var switch : Switch = layout.findViewById(R.id.switch1) as Switch
         socketThread.setContext(requireContext())
 
         button_enter.setOnClickListener {

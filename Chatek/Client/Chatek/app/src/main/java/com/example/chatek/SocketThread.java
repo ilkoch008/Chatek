@@ -38,6 +38,7 @@ public class SocketThread extends Thread {
     private  RecyclerView dialogRecView;
     private  RecyclerView mainRecView;
     private boolean connected = false;
+    private int chosenCompanion=-1;
     ArrayList<Message> messages = new ArrayList<Message>();
     ArrayList<Message> newMessages = new ArrayList<Message>();
     ArrayList<Companion> companions = new ArrayList<Companion>();
@@ -47,6 +48,7 @@ public class SocketThread extends Thread {
     Context currentContext = null;
     SocketThread socketThread = this;
     Router router = null;
+    public static CheckForMessagesThread checkForMessagesThread = null;
     /*
     1 - connect to server, get id, send nickname
     2 - get list of available companions
@@ -95,6 +97,7 @@ public class SocketThread extends Thread {
     synchronized public void setRouter(Router router){this.router = router;}
     synchronized public void setContext(Context context){this.currentContext = context;}
     synchronized public boolean isConnected(){return connected;}
+    synchronized public void setTheChosenOne(Integer chosen){this.chosenCompanion = chosen;}
 
     @Override
     public void run() {
@@ -150,6 +153,10 @@ public class SocketThread extends Thread {
                             mainFragment.set_SocketThread(socketThread);
                             router.navigateTo(false, mainFragment);
                             command = GET_COMPANIONS;
+                            checkForMessagesThread = new CheckForMessagesThread(ip, password, nickName);
+                            checkForMessagesThread.setMainActivity(mainActivity);
+                            checkForMessagesThread.setTypeOfRun(checkForMessagesThread.RUN_IN_APP);
+                            checkForMessagesThread.start();
                             mainActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -218,6 +225,10 @@ public class SocketThread extends Thread {
                                 }
                             });
                             id = jIncoming.getInt("clientId");
+                            checkForMessagesThread = new CheckForMessagesThread(ip, password, nickName);
+                            checkForMessagesThread.setMainActivity(mainActivity);
+                            checkForMessagesThread.setTypeOfRun(checkForMessagesThread.RUN_IN_APP);
+                            checkForMessagesThread.start();
                             command = GET_COMPANIONS;
                             Thread.yield();
                         }
@@ -237,12 +248,21 @@ public class SocketThread extends Thread {
                         jIncoming = new JSONObject(incoming);
                         jIncomingMessages = jIncoming.getJSONArray("companions");
                         int mmm = jIncomingMessages.length();
+                        ArrayList<Integer> oldNumbersOfMessages = new ArrayList<>();
+                        for (Companion i: companions) {
+                            oldNumbersOfMessages.add(i.getOldNumberOfMessages());
+                        }
+                        Integer maxOld = oldNumbersOfMessages.size();
                         companions.clear();
                         for (int j = 0; j < mmm; j++) {
                             companions.add(new Companion(
                                     jIncomingMessages.getJSONObject(j).getString("name"),
                                     jIncomingMessages.getJSONObject(j).getInt("id"),
-                                    jIncomingMessages.getJSONObject(j).getBoolean("availability")));
+                                    jIncomingMessages.getJSONObject(j).getBoolean("availability"),
+                                    jIncomingMessages.getJSONObject(j).getInt("numberOfMessages")));
+                            if(j < maxOld){
+                                companions.get(j).setOldNumberOfMessages(oldNumbersOfMessages.get(j));
+                            }
                         }
                         if(companions != null && mAdapter != null) {
                             mAdapter.listt_define(companions);
@@ -253,6 +273,10 @@ public class SocketThread extends Thread {
                                     mAdapter.notifyDataSetChanged();
                                 }
                             });
+                        }
+                        if(chosenCompanion>=0) {
+                            companions.get(chosenCompanion).overlook();
+                            chosenCompanion = -1;
                         }
                         Thread.yield();
                     } catch (IOException e){e.printStackTrace();}
@@ -310,6 +334,7 @@ public class SocketThread extends Thread {
                         out.println(away.toString());
                         incoming = in.readLine();
                         jIncomingMessages = new JSONArray(incoming);
+                        int diff = messages.size();
                         newMessages.clear();
                         messages.clear();
                         for (int i = jIncomingMessages.length() - 1; i >= 0; i--) {
@@ -320,7 +345,12 @@ public class SocketThread extends Thread {
                                     .timeIs(jIncomingMessages.getJSONObject(i).getString("time"))
                                     .build());
                         }
+                        diff = newMessages.size() - diff;
+                        checkForMessagesThread.incrementOld(diff);
                         messages = newMessages;
+                        if(chosenCompanion>=0) {
+                            companions.get(chosenCompanion).overlook();
+                        }
                         if (mmAdapter != null) {
                             mmAdapter.listt_define(messages);
                             dialogView.post(new Runnable() {
@@ -344,7 +374,7 @@ public class SocketThread extends Thread {
                     break;
                 case WAIT_GET_COMPANIONS:
                     i++;
-                    if(i<200) {
+                    if(i<400) {
                         try {
                             Thread.sleep(5);
                         } catch (InterruptedException e) {
@@ -352,7 +382,9 @@ public class SocketThread extends Thread {
                         }
                     } else {
                         i=0;
-                        command = GET_COMPANIONS;
+                        if(command != RENEW_DIALOG && command != WAIT_RENEW_DIALOG) {
+                            command = GET_COMPANIONS;
+                        }
                     }
                     break;
                 case WAIT_RENEW_DIALOG:

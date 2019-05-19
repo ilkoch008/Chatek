@@ -1,11 +1,14 @@
 package com.example.chatek
 
+import android.graphics.Color
 import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 
@@ -48,6 +51,11 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
     override fun getItemCount(): Int = listt.size
 
     override fun onBindViewHolder(holder: SearchClickableViewHolder, position: Int) {
+
+        if(listt[position].diff != 0){
+            holder.recolorBackground()
+        }
+
         if (listt[position].availability) {
             holder.setText(listt[position].name + "\n")
         } else {
@@ -60,6 +68,8 @@ class MyAdapter : RecyclerView.Adapter<SearchClickableViewHolder>() {
         router = Router(req_activity, R.id.fragment_container)
         val dialogfragment : DialogFragment = DialogFragment()
         dialogfragment.set_CompanionId(listt[position].id)
+        socketThread.setTheChosenOne(position)
+        socketThread.setCompaionId(listt[position].id)
         dialogfragment.set_SocketThread(socketThread)
         router.navigateTo(true, dialogfragment)
     }
@@ -81,6 +91,13 @@ class SearchClickableViewHolder(view : View,
 
     fun setText(text: String) {
         this.text.text = text
+    }
+
+    fun recolorBackground(){
+        val cardView: CardView = localView.findViewById(R.id.cardView)
+        val linearLayout: LinearLayout = localView.findViewById(R.id.linearLayout)
+        cardView.setCardBackgroundColor(Color.argb(255, 217, 190, 128))
+        linearLayout.setBackgroundColor(Color.argb(100, 217, 190, 128))
     }
 
     fun setOwner(owner: String){

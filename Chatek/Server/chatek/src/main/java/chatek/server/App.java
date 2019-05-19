@@ -21,6 +21,7 @@ public class App
 
     public static void main( String[] args ) {
         companions.Add(new Companion("Server", 0, true, "ritnbritniwrnbowrtnpwirunbwriptu"));
+        companions.setConversations(conversations);
         //companions.add(new Companion("Server1", 1));
         for (int i = 0; i < 100; i++){
             for (int j = i; j < 100; j++) {
