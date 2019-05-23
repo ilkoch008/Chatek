@@ -137,6 +137,19 @@ public class Client extends Thread {
                         }
                         break;
                     case GET_DIFFERENCE_IN_DIALOGS:
+                        if(LOGGED_IN) {
+                            companions.setNumbersOfMessagesInCompanions(clientId);
+                            int oldNum = jInput.get("oldNum").getAsInt();
+                            int mmm = companions.getSize();
+                            int newNum=0;
+                            int diff;
+                            for(int i=0; i<mmm; i++){
+                                newNum += companions.companions.get(i).numberOfMessages;
+                            }
+                            diff = newNum - oldNum;
+                            jOutput.addProperty("diff", diff);
+                            out.println(jOutput.toString());
+                        }
                         break;
                     case SEND_MESSAGE:
                         if(LOGGED_IN) {
@@ -146,7 +159,14 @@ public class Client extends Thread {
                                     .ownerIs(jInput.get("owner").getAsString())
                                     .timeIs(getCurrentTime())
                                     .build();
-                            conversation.Add(message);
+                            if(conversation==null){
+                                System.out.println("CONV NUUUUULLLLL");
+                                command = CHOOSE_COMPANION;
+                            } else  if(message==null){
+                                System.out.println("MES NUUUUUULLLLL");
+                            } else {
+                                conversation.Add(message);
+                            }
 //                        if(key.contains(0)) {
 //                        Message response = new Message.Builder()
 //                                .messageIs("etggwrry")

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -49,6 +50,7 @@ public class SocketThread extends Thread {
     SocketThread socketThread = this;
     Router router = null;
     public static CheckForMessagesThread checkForMessagesThread = null;
+    ProgressBar progressBar2 = null;
     /*
     1 - connect to server, get id, send nickname
     2 - get list of available companions
@@ -69,6 +71,7 @@ public class SocketThread extends Thread {
     final static int ACCOUNT_IS_NOT_FOUND = 14;
     final static int WRONG_PASSWORD = 15;
     final static int GET_COMPANIONS = 2;
+    final static int GET_DIFFERENCE_IN_DIALOGS = 21;
     final static int SEND_MESSAGE = 3;
     final static int RENEW_DIALOG = 4;
     final static int WAIT_GET_COMPANIONS = 5;
@@ -98,11 +101,13 @@ public class SocketThread extends Thread {
     synchronized public void setContext(Context context){this.currentContext = context;}
     synchronized public boolean isConnected(){return connected;}
     synchronized public void setTheChosenOne(Integer chosen){this.chosenCompanion = chosen;}
+    synchronized public void setProgressBar2(ProgressBar progressBar2){this.progressBar2 = progressBar2;}
 
     @Override
     public void run() {
         while (true) {
             if (Thread.interrupted()) {
+
                 break;
             }
             JSONObject away = new JSONObject();
@@ -241,6 +246,14 @@ public class SocketThread extends Thread {
                     break;
                 case GET_COMPANIONS:
                     try{
+                        mainView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mAdapter.get_listt().size()==0) {
+                                    progressBar2.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
                         away.put("command", GET_COMPANIONS);
                         away.put("data", "get companions");
                         out.println(away.toString());
@@ -264,11 +277,13 @@ public class SocketThread extends Thread {
                                 companions.get(j).setOldNumberOfMessages(oldNumbersOfMessages.get(j));
                             }
                         }
+
                         if(companions != null && mAdapter != null) {
                             mAdapter.listt_define(companions);
                             mainView.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progressBar2.setVisibility(View.INVISIBLE);
                                     mainRecView.getRecycledViewPool().clear();
                                     mAdapter.notifyDataSetChanged();
                                 }
@@ -294,6 +309,7 @@ public class SocketThread extends Thread {
                         e.printStackTrace();
                     }
                     out.println(away.toString());
+                    checkForMessagesThread.incrementOld(1);
                     try {
                         messages.clear();
                         incoming = in.readLine();
@@ -329,12 +345,20 @@ public class SocketThread extends Thread {
                     break;
                 case RENEW_DIALOG:
                     try {
+                        mainView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(mmAdapter.get_listt_size()==0) {
+                                    progressBar2.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
                         away.put("command", command);
                         away.put("data", "renew dialog");
                         out.println(away.toString());
                         incoming = in.readLine();
                         jIncomingMessages = new JSONArray(incoming);
-                        int diff = messages.size();
+                        //int diff = messages.size();
                         newMessages.clear();
                         messages.clear();
                         for (int i = jIncomingMessages.length() - 1; i >= 0; i--) {
@@ -345,8 +369,8 @@ public class SocketThread extends Thread {
                                     .timeIs(jIncomingMessages.getJSONObject(i).getString("time"))
                                     .build());
                         }
-                        diff = newMessages.size() - diff;
-                        checkForMessagesThread.incrementOld(diff);
+                        //diff = newMessages.size() - diff;
+                        //checkForMessagesThread.incrementOld(diff);
                         messages = newMessages;
                         if(chosenCompanion>=0) {
                             companions.get(chosenCompanion).overlook();
@@ -356,6 +380,7 @@ public class SocketThread extends Thread {
                             dialogView.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    progressBar2.setVisibility(View.INVISIBLE);
                                     dialogRecView.getRecycledViewPool().clear();
                                     mmAdapter.notifyDataSetChanged();
                                 }
@@ -382,7 +407,7 @@ public class SocketThread extends Thread {
                         }
                     } else {
                         i=0;
-                        if(command != RENEW_DIALOG && command != WAIT_RENEW_DIALOG) {
+                        if(command != RENEW_DIALOG && command != WAIT_RENEW_DIALOG && command != CHOOSE_COMPANION) {
                             command = GET_COMPANIONS;
                         }
                     }
@@ -397,7 +422,7 @@ public class SocketThread extends Thread {
                         }
                     } else {
                         i=0;
-                        if (command != SEND_MESSAGE && command != GET_COMPANIONS) {
+                        if (command != SEND_MESSAGE && command != GET_COMPANIONS && command != CHOOSE_COMPANION) {
                             command = RENEW_DIALOG;
                         }
                     }
